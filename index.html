@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TITANS Portal</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- ================================================
+    Google Sign-In Script
+    This must load BEFORE the page renders for the
+    Google button to appear correctly on Live Server.
+  ================================================ -->
+  <script src="https://accounts.google.com/gsi/client"></script>
+
+</head>
+<body>
+
+  <div class="login-container">
+
+    <!-- LOGO -->
+    <div class="login-logo-wrap">
+      <div class="login-bolt">⚡</div>
+      <h1 class="logo">TITANS</h1>
+      <p class="tag">Team Management System</p>
+    </div>
+
+    <!-- EMAIL / PASSWORD FORM -->
+    <form id="loginForm" onsubmit="login(); return false;">
+
+      <div class="input-wrap">
+        <span class="input-icon">✉</span>
+        <input
+          type="email"
+          id="email"
+          placeholder="Team Email"
+          required
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="input-wrap">
+        <span class="input-icon">🔒</span>
+        <input
+          type="password"
+          id="password"
+          placeholder="Password"
+          required
+          autocomplete="off"
+        />
+      </div>
+
+      <button type="submit" class="login-btn">Login →</button>
+
+      <p id="errorMessage" class="error-message"></p>
+
+    </form>
+
+    <!-- DIVIDER -->
+    <div class="divider"><span>OR</span></div>
+
+    <!-- ================================================
+      GOOGLE SIGN-IN BUTTON
+      ⚠️  This button ONLY shows when you open the page
+          using Live Server (http://127.0.0.1:5500)
+          It will NOT show if you open by double-clicking
+          the file (file://).
+
+      data-client_id → your Google OAuth Client ID
+      Keep this as-is — it's already set for TITANS.
+    ================================================ -->
+    <div
+      id="g_id_onload"
+      data-client_id="92364977850-hngkiov4is4n3q2n5qa0pkb6ugqnq2uo.apps.googleusercontent.com"
+      data-callback="handleCredentialResponse"
+      data-auto_prompt="false"
+      data-cancel_on_tap_outside="false">
+    </div>
+
+    <div
+      class="g_id_signin"
+      data-type="standard"
+      data-size="large"
+      data-theme="filled_black"
+      data-text="signin_with"
+      data-shape="pill"
+      data-logo_alignment="left"
+      data-width="310">
+    </div>
+
+    
+
+    <!-- footer -->
+    <p class="login-footer">Access restricted to TITANS members only</p>
+
+  </div>
+
+  
+
+  <!-- Auth logic — handles both email login and Google login -->
+  <script src="auth.js"></script>
+
+  <!-- ================================================
+    If Google button still doesn't show:
+    1. Make sure you opened via Live Server
+    2. Go to console.cloud.google.com
+    3. APIs & Services → Credentials → your OAuth ID
+    4. Add http://127.0.0.1:5500 to Authorized JavaScript origins
+    5. Save and wait 2 minutes then refresh
+  ================================================ -->
+
+</body>
+</html>

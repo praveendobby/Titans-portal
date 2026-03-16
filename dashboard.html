@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TITANS Portal — Dashboard</title>
+  <link rel="stylesheet" href="dasboard.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sidebar-logo">
+    <span class="bolt-icon">⚡</span>
+    <span class="brand-txt">TITANS</span>
+  </div>
+  <ul>
+    <li class="active" onclick="showSection('home',this)" title="Home">
+      <span class="nav-icon">⊞</span><span class="nav-label">Home</span>
+    </li>
+    <li onclick="showSection('tasks',this)" title="Tasks">
+      <span class="nav-icon">✓</span><span class="nav-label">Tasks</span>
+    </li>
+    <li onclick="showSection('members',this)" title="Members">
+      <span class="nav-icon">👥</span><span class="nav-label">Members</span>
+    </li>
+    <li onclick="showSection('leaderboard',this)" title="Leaderboard">
+      <span class="nav-icon">🏆</span><span class="nav-label">Board</span>
+    </li>
+    <li onclick="showSection('noticeboard',this)" title="Notice Board">
+      <span class="nav-icon">📰</span><span class="nav-label">Notice</span>
+    </li>
+    <li onclick="showSection('meetings',this)" title="Meetings">
+      <span class="nav-icon">📅</span><span class="nav-label">Meetings</span>
+    </li>
+    <li onclick="showSection('analytics',this)" id="analyticsNav" style="display:none" title="Analytics">
+      <span class="nav-icon">📊</span><span class="nav-label">Analytics</span>
+    </li>
+    <li onclick="showSection('profile',this)" title="My Profile">
+      <span class="nav-icon">◉</span><span class="nav-label">Profile</span>
+    </li>
+  </ul>
+  <div class="sidebar-logout" onclick="logout()" title="Logout">⏻</div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-title" id="sectionTitle">Dashboard</div>
+      <div class="topbar-sub">TITANS · <span id="topbarRole"></span></div>
+    </div>
+    <div class="topbar-right">
+      <div class="sync-badge" id="syncBadge"></div>
+      <select class="status-sel" id="myStatusSel" onchange="updateMyStatus(this.value)">
+        <option value="online">🟢 Online</option>
+        <option value="busy">🔴 Busy</option>
+        <option value="away">🟡 Away</option>
+      </select>
+      <div class="topbar-sprint">Sprint 14 · Q1 2026</div>
+      <div class="notif-wrap">
+        <div class="notif-btn" id="notifBtn" onclick="toggleNotif()">
+          🔔<div class="notif-dot" id="notifDot"></div>
+        </div>
+        <div class="notif-panel" id="notifPanel">
+          <div class="notif-header">Notifications <span class="notif-clear" onclick="clearNotifs()">Clear all</span></div>
+          <div class="notif-list" id="notifList"><div class="notif-empty">No notifications yet</div></div>
+        </div>
+      </div>
+      <div class="topbar-user">
+        <div class="topbar-avatar" id="topbarAvatar"></div>
+        <span class="topbar-name" id="topbarName"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ HOME ═══ -->
+  <section id="sec-home" class="section active">
+
+    <!-- Announcement Banner -->
+    <div id="announcementBanner" style="display:none" class="announcement-banner">
+      <span class="ann-icon">📢</span>
+      <span id="annText"></span>
+      <span onclick="dismissAnnouncement()" style="cursor:pointer;margin-left:auto;opacity:0.6">✕</span>
+    </div>
+
+    <!-- Sprint Countdown -->
+    <div class="countdown-card">
+      <div class="cd-label">⏱ Sprint 14 ends in</div>
+      <div class="cd-timer" id="cdTimer">-- -- -- --</div>
+      <div class="cd-bar-bg"><div class="cd-bar-fill" id="cdBarFill"></div></div>
+    </div>
+
+    <!-- Stat cards -->
+    <div class="stat-grid">
+      <div class="stat-card" style="--accent:#8b5cf6">
+        <div class="stat-icon">👥</div>
+        <div class="stat-info"><div class="stat-label">Total Members</div><div class="stat-val">15</div></div>
+      </div>
+      <div class="stat-card" style="--accent:#10b981">
+        <div class="stat-icon">✅</div>
+        <div class="stat-info"><div class="stat-label">Tasks Done</div><div class="stat-val" id="statDone">0</div></div>
+      </div>
+      <div class="stat-card" style="--accent:#f59e0b">
+        <div class="stat-icon">⏳</div>
+        <div class="stat-info"><div class="stat-label">In Progress</div><div class="stat-val" id="statPending">0</div></div>
+      </div>
+      <div class="stat-card" style="--accent:#ef4444">
+        <div class="stat-icon">📋</div>
+        <div class="stat-info"><div class="stat-label">My Tasks</div><div class="stat-val" id="statTotal">0</div></div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <!-- My Tasks -->
+      <div class="card">
+        <div class="card-head"><span class="card-title">My Tasks</span><span class="badge-pill" id="myTaskCount">0</span></div>
+        <ul class="task-list" id="homeTaskList"></ul>
+        <div class="empty-state" id="homeEmpty" style="display:none"><span>🎯</span><p>No tasks assigned yet</p></div>
+      </div>
+      <!-- Team Progress + Workload -->
+      <div class="card">
+        <div class="card-head"><span class="card-title">Team Progress</span></div>
+        <div id="teamProgressBars"></div>
+        <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+          <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px">⚖ Workload Meter</div>
+          <div id="workloadMeter"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Upcoming Meeting + News -->
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-head"><span class="card-title">📅 Upcoming Meetings</span></div>
+        <div id="homeUpcomingMeetings"></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">📰 Latest News</span></div>
+        <div id="homeLatestNews"></div>
+      </div>
+    </div>
+
+    <!-- Standup + Heatmap -->
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-head"><span class="card-title">📋 Daily Standup</span><span id="standupDate" style="font-size:11px;color:var(--text3)"></span></div>
+        <div id="standupSection"></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">🔥 Activity Heatmap</span><span style="font-size:11px;color:var(--text3)">Last 5 weeks</span></div>
+        <div id="heatmap"></div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ═══ TASKS ═══ -->
+  <section id="sec-tasks" class="section">
+
+    <!-- Captain tools -->
+    <div id="captainTools" style="display:none">
+
+      <!-- Announcement -->
+      <div class="card" style="margin-bottom:20px">
+        <div class="card-head"><span class="card-title">📢 Post Announcement</span><span class="badge-pill captain-badge">Captain Access</span></div>
+        <div class="ann-form">
+          <input id="annInput" placeholder="e.g. Meeting at 3pm today, focus on API integration…"/>
+          <button class="btn-primary" onclick="postAnnouncement()">📢 Post</button>
+        </div>
+      </div>
+
+      <!-- AI Task Suggester -->
+      <div class="card" style="margin-bottom:20px">
+        <div class="card-head">
+          <span class="card-title">🤖 AI Task Suggester</span>
+          <span class="badge-pill" style="background:rgba(99,102,241,0.15);color:#818cf8">Powered by Claude</span>
+        </div>
+        <div class="ai-form">
+          <input id="aiGoalInput" placeholder="e.g. Build login system, Create mobile UI…"/>
+          <button class="btn-ai" onclick="suggestTasks()">✨ Suggest Tasks</button>
+        </div>
+        <div id="aiResults" style="margin-top:14px"></div>
+      </div>
+
+      <!-- Assign Task -->
+      <div class="card" id="assignCard" style="margin-bottom:20px">
+        <div class="card-head"><span class="card-title">Assign Task</span><span class="role-badge captain-badge">⚡ Captain Access</span></div>
+        <div class="assign-form">
+          <input id="taskInput" placeholder="Task description…"/>
+          <select id="memberSelect"></select>
+          <select id="prioritySelect">
+            <option value="normal">📌 Normal</option>
+            <option value="high">🔴 High</option>
+            <option value="medium">🟡 Medium</option>
+            <option value="low">🟢 Low</option>
+          </select>
+          <input type="date" id="dueDateInput"/>
+          <input id="fileLinkInput" placeholder="🔗 File/Drive link (optional)"/>
+          <button class="btn-primary" onclick="addTask()">+ Assign</button>
+        </div>
+        <div id="wa-btn-wrap" style="display:none;margin-top:12px"></div>
+      </div>
+
+      <!-- Pending Reviews (captain sees submitted tasks) -->
+      <div class="card" id="reviewCard" style="margin-bottom:20px">
+        <div class="card-head">
+          <span class="card-title">🔍 Pending Reviews</span>
+          <span class="badge-pill" id="reviewCount" style="background:rgba(239,68,68,0.15);color:#f87171">0</span>
+        </div>
+        <div id="reviewList">
+          <div class="empty-state"><span>✅</span><p>No submissions to review</p></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Task list -->
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title" id="taskListTitle">My Tasks</span>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <select id="filterMember" class="filter-select" onchange="renderTasks()"><option value="all">All Members</option></select>
+          <select id="filterStatus" class="filter-select" onchange="renderTasks()">
+            <option value="all">All Status</option>
+            <option value="pending">Pending</option>
+            <option value="submitted">Submitted</option>
+            <option value="reviewed">Reviewed</option>
+            <option value="done">Done</option>
+          </select>
+          <select id="filterPriority" class="filter-select" onchange="renderTasks()">
+            <option value="all">All Priority</option>
+            <option value="high">🔴 High</option>
+            <option value="medium">🟡 Medium</option>
+            <option value="normal">📌 Normal</option>
+            <option value="low">🟢 Low</option>
+          </select>
+        </div>
+      </div>
+      <ul class="task-list full" id="taskList"></ul>
+      <div class="empty-state" id="taskEmpty" style="display:none"><span>📭</span><p>No tasks found</p></div>
+    </div>
+
+  </section>
+
+  <!-- ═══ MEMBERS ═══ -->
+  <section id="sec-members" class="section">
+    <div class="card">
+      <div class="card-head"><span class="card-title">Team Members</span><span class="badge-pill">15 members</span></div>
+      <div class="members-grid" id="membersGrid"></div>
+    </div>
+  </section>
+
+  <!-- ═══ LEADERBOARD ═══ -->
+  <section id="sec-leaderboard" class="section">
+    <div class="mvp-banner" id="mvpBanner" style="display:none"></div>
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">🏆 Leaderboard</span>
+        <span class="badge-pill" style="background:rgba(245,158,11,0.15);color:#f59e0b">Sprint 14</span>
+      </div>
+      <div class="leaderboard-podium" id="podium"></div>
+      <div class="leaderboard-table" id="leaderboardList"></div>
+    </div>
+  </section>
+
+  <!-- ═══ NOTICE BOARD ═══ -->
+  <section id="sec-noticeboard" class="section">
+
+    <!-- Captain: Post news -->
+    <div class="card" id="newsPostCard" style="display:none;margin-bottom:20px">
+      <div class="card-head"><span class="card-title">📰 Post News / Update</span><span class="badge-pill captain-badge">Captain Access</span></div>
+      <div class="news-post-form">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+          <input id="newsTitleInput" placeholder="Title e.g. Today's Update, Venue Change…"/>
+          <select id="newsCategory">
+            <option value="news">📰 News</option>
+            <option value="venue">📍 Venue Update</option>
+            <option value="schedule">🗓 Schedule</option>
+            <option value="important">🚨 Important</option>
+            <option value="achievement">🏅 Achievement</option>
+          </select>
+        </div>
+        <textarea id="newsBody" placeholder="Write your update here… e.g. Today's session will be held at Lab 3, Second Floor. Bring your laptops." rows="3"></textarea>
+        <div style="display:flex;gap:10px;margin-top:10px;align-items:center">
+          <input id="newsLink" placeholder="🔗 Link (optional)" style="flex:1"/>
+          <button class="btn-primary" onclick="postNews()">📢 Post Update</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- News feed -->
+    <div id="newsFeed"></div>
+
+  </section>
+
+  <!-- ═══ MEETINGS ═══ -->
+  <section id="sec-meetings" class="section">
+
+    <!-- Captain: Schedule meeting -->
+    <div class="card" id="meetingPostCard" style="display:none;margin-bottom:20px">
+      <div class="card-head"><span class="card-title">📅 Schedule Meeting</span><span class="badge-pill captain-badge">Captain Access</span></div>
+      <div class="meeting-form">
+        <input id="meetingTitle" placeholder="Meeting title e.g. Sprint Review, Daily Standup…"/>
+        <input type="date" id="meetingDate"/>
+        <input type="time" id="meetingTime"/>
+        <input id="meetingVenue" placeholder="Venue e.g. Lab 3, Google Meet, Room 201…"/>
+        <input id="meetingLink" placeholder="🔗 Meeting link (optional)"/>
+        <select id="meetingType">
+          <option value="standup">☀ Daily Standup</option>
+          <option value="sprint">🏃 Sprint Review</option>
+          <option value="planning">📋 Planning</option>
+          <option value="demo">🎯 Demo</option>
+          <option value="other">📅 Other</option>
+        </select>
+        <button class="btn-primary" onclick="scheduleMeeting()">📅 Schedule</button>
+      </div>
+    </div>
+
+    <!-- Meetings list -->
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">📅 All Meetings</span>
+        <div style="display:flex;gap:8px">
+          <select class="filter-select" id="meetingFilter" onchange="renderMeetings()">
+            <option value="upcoming">Upcoming</option>
+            <option value="all">All</option>
+            <option value="past">Past</option>
+          </select>
+        </div>
+      </div>
+      <div id="meetingsList"></div>
+    </div>
+
+  </section>
+
+  <!-- ═══ ANALYTICS (Captain Only) ═══ -->
+  <section id="sec-analytics" class="section">
+    <div class="grid-2" style="margin-bottom:20px">
+      <div class="card">
+        <div class="card-head"><span class="card-title">📊 Task Distribution</span></div>
+        <div id="taskDistChart"></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">⚡ Overdue Alerts</span></div>
+        <div id="overdueList"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">📈 Team Performance Report</span>
+        <button class="btn-primary" style="padding:7px 14px;font-size:12px" onclick="generateReport()">Generate Report</button>
+      </div>
+      <div id="reportContent"></div>
+    </div>
+  </section>
+
+  <!-- ═══ PROFILE ═══ -->
+  <section id="sec-profile" class="section">
+    <div class="profile-wrap">
+
+      <div class="card profile-card">
+        <div class="prof-banner"><div class="prof-banner-text">TITANS</div></div>
+        <div class="prof-photo-ring"><div class="prof-photo" id="profPhoto"></div></div>
+        <div class="prof-body">
+          <div class="prof-name" id="profileName"></div>
+          <div class="prof-desig" id="profileDesig"></div>
+          <div id="profileBadges" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:16px"></div>
+          <div class="streak-row" id="streakRow"></div>
+          <div class="prof-stats-row">
+            <div class="prof-mini-stat"><div class="prof-mini-num green" id="perfDone">0</div><div class="prof-mini-label">Done</div></div>
+            <div class="prof-mini-stat"><div class="prof-mini-num amber" id="perfPending">0</div><div class="prof-mini-label">Pending</div></div>
+            <div class="prof-mini-stat"><div class="prof-mini-num" id="perfTotal">0</div><div class="prof-mini-label">Total</div></div>
+            <div class="prof-mini-stat"><div class="prof-mini-num gold" id="perfRank">#—</div><div class="prof-mini-label">Rank</div></div>
+          </div>
+          <!-- Points earned -->
+          <div class="points-row">
+            <div class="pts-icon">⭐</div>
+            <div class="pts-info">
+              <div class="pts-num" id="totalPoints">0</div>
+              <div class="pts-lbl">Points Earned</div>
+            </div>
+          </div>
+          <div class="prof-rows">
+            <div class="prof-row"><span class="prof-lbl">🏛 Department</span><span class="prof-val" id="pDept"></span></div>
+            <div class="prof-row"><span class="prof-lbl">👥 Team</span><span class="prof-val" id="pTeam"></span></div>
+            <div class="prof-row"><span class="prof-lbl"># Group ID</span><span class="prof-val" id="pGroup"></span></div>
+            <div class="prof-row"><span class="prof-lbl">🎓 Reg No</span><span class="prof-val" id="pReg"></span></div>
+            <div class="prof-row"><span class="prof-lbl">⚡ Role</span><span class="prof-val" id="pRole"></span></div>
+          </div>
+          <div class="prof-bar-wrap">
+            <div class="prof-bar-top"><span>Completion Rate</span><span id="perfPct">0%</span></div>
+            <div class="prof-bar-bg"><div class="prof-bar-fill" id="perfBar"></div></div>
+          </div>
+          <button class="btn-danger" onclick="logout()">⏻ Logout</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span class="card-title">Recent Activity</span><span class="badge-pill" id="recentCount">0</span></div>
+        <ul class="task-list" id="recentActivity"></ul>
+        <div class="empty-state" id="recentEmpty" style="display:none"><span>📋</span><p>No activity yet</p></div>
+      </div>
+
+    </div>
+  </section>
+
+</div><!-- /main -->
+
+<!-- Task Submit Modal (Member submits work) -->
+<div id="submitModal" class="modal-overlay" style="display:none" onclick="closeSubmitModal()">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <span style="font-size:14px;font-weight:600;color:var(--text)">📤 Submit Task</span>
+      <button onclick="closeSubmitModal()" style="background:none;border:none;color:var(--text3);font-size:20px;cursor:pointer">✕</button>
+    </div>
+    <p id="submitTaskName" style="font-size:13px;color:var(--text2);margin-bottom:14px"></p>
+    <input id="submitNote" placeholder="Add a note e.g. Completed login page with OAuth integration" style="width:100%;padding:11px 13px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:13px;font-family:Inter,sans-serif;outline:none;margin-bottom:10px"/>
+    <input id="submitLink" placeholder="🔗 Paste your work link (GitHub, Drive, Figma…)" style="width:100%;padding:11px 13px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:13px;font-family:Inter,sans-serif;outline:none;margin-bottom:14px"/>
+    <button class="btn-primary" style="width:100%" onclick="submitTask()">📤 Submit for Review</button>
+  </div>
+</div>
+
+<!-- Review Modal (Captain reviews submitted task) -->
+<div id="reviewModal" class="modal-overlay" style="display:none" onclick="closeReviewModal()">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <span style="font-size:14px;font-weight:600;color:var(--text)">🔍 Review Task</span>
+      <button onclick="closeReviewModal()" style="background:none;border:none;color:var(--text3);font-size:20px;cursor:pointer">✕</button>
+    </div>
+    <div id="reviewTaskDetails" style="margin-bottom:16px"></div>
+    <div style="margin-bottom:14px">
+      <label style="font-size:12px;color:var(--text2);display:block;margin-bottom:8px">⭐ Assign Points (1–10)</label>
+      <div class="points-picker" id="pointsPicker"></div>
+    </div>
+    <input id="reviewFeedback" placeholder="Feedback for member e.g. Great work! Clean code. Fix the edge case on line 42." style="width:100%;padding:11px 13px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:13px;font-family:Inter,sans-serif;outline:none;margin-bottom:14px"/>
+    <div style="display:flex;gap:10px">
+      <button class="btn-primary" style="flex:1" onclick="approveTask()">✅ Approve & Assign Points</button>
+      <button style="flex:1;background:rgba(239,68,68,0.1);color:var(--red);border:1px solid rgba(239,68,68,0.3);padding:11px;border-radius:10px;cursor:pointer;font-family:Inter,sans-serif;font-size:13px" onclick="rejectTask()">↩ Send Back</button>
+    </div>
+  </div>
+</div>
+
+<!-- Comment Modal -->
+<div id="commentModal" class="modal-overlay" style="display:none" onclick="closeCommentModal()">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <span id="commentTaskTitle" style="font-size:14px;font-weight:600;color:var(--text)"></span>
+      <button onclick="closeCommentModal()" style="background:none;border:none;color:var(--text3);font-size:20px;cursor:pointer">✕</button>
+    </div>
+    <div id="commentsList" style="max-height:260px;overflow-y:auto;margin-bottom:12px"></div>
+    <div style="display:flex;gap:8px">
+      <input id="commentInput" placeholder="Add a comment or progress update…"/>
+      <button class="btn-primary" style="padding:10px 16px" onclick="addComment()">Send</button>
+    </div>
+  </div>
+</div>
+
+<!-- Reassign Modal -->
+<div id="reassignModal" class="modal-overlay" style="display:none" onclick="closeReassignModal()">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <span style="font-size:14px;font-weight:600;color:var(--text)">↔ Reassign Task</span>
+      <button onclick="closeReassignModal()" style="background:none;border:none;color:var(--text3);font-size:20px;cursor:pointer">✕</button>
+    </div>
+    <p id="reassignTaskName" style="font-size:13px;color:var(--text2);margin-bottom:14px"></p>
+    <select id="reassignSelect" style="width:100%;padding:11px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:13px;margin-bottom:14px;outline:none;font-family:Inter,sans-serif"></select>
+    <button class="btn-primary" style="width:100%" onclick="confirmReassign()">Reassign Task</button>
+  </div>
+</div>
+
+<!-- ═══ FIREBASE ═══ -->
+<script type="module">
+  import { initializeApp }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getDatabase, ref, onValue, push, update, remove, set }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+  /* ✅ YOUR FIREBASE CONFIG */
+  const firebaseConfig = {
+    apiKey:            "AIzaSyCaInB1din3Z6iiGJZIG6J7b9U2ASnfgsY",
+    authDomain:        "titans-portal-8b124.firebaseapp.com",
+    databaseURL:       "https://titans-portal-8b124-default-rtdb.firebaseio.com",
+    projectId:         "titans-portal-8b124",
+    storageBucket:     "titans-portal-8b124.firebasestorage.app",
+    messagingSenderId: "248684743938",
+    appId:             "1:248684743938:web:7500d46e42bf3a5205061b"
+  };
+
+  const hasFirebase = !firebaseConfig.apiKey.includes("PASTE");
+
+  let app, db, tasksRef, metaRef;
+  if (hasFirebase) {
+    app      = initializeApp(firebaseConfig);
+    db       = getDatabase(app);
+    tasksRef = ref(db, "titans/tasks");
+    metaRef  = ref(db, "titans/meta");
+  }
+
+  window._FB = { hasFirebase, db, tasksRef, metaRef, ref, onValue, push, update, remove, set };
+</script>
+
+<script src="dashboard.js"></script>
+</body>
+</html>
