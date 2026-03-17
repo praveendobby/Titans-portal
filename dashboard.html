@@ -398,7 +398,38 @@
           <button class="btn-danger" onclick="logout()">⏻ Logout</button>
         </div>
       </div>
-
+     <div class="flip-card" id="profileFlipCard">
+  <div class="flip-inner">
+    <div class="flip-front card" style="padding:0;overflow:hidden;cursor:pointer" onclick="document.getElementById('profileFlipCard').classList.toggle('flipped')">
+      <div style="background:linear-gradient(135deg,#2d1b69,#4a2a8a);height:60px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;letter-spacing:6px;color:rgba(255,255,255,0.15)">TITANS</div>
+      <div style="padding:16px;text-align:center">
+        <div class="prof-photo" id="flipFrontPhoto" style="margin:0 auto 10px"></div>
+        <div style="font-size:16px;font-weight:600;color:var(--text)" id="flipFrontName"></div>
+        <div style="font-size:11px;color:#8b5cf6;letter-spacing:2px;margin-top:2px" id="flipFrontRole"></div>
+        <div style="font-size:12px;color:var(--text3);margin-top:6px" id="flipFrontDept"></div>
+        <div style="margin-top:16px;font-size:11px;color:var(--text3)">Tap to see skills →</div>
+      </div>
+    </div>
+    <div class="flip-back card" style="padding:20px;cursor:pointer" onclick="document.getElementById('profileFlipCard').classList.toggle('flipped')">
+      <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px" id="flipBackName"></div>
+      <div style="font-size:11px;color:#8b5cf6;letter-spacing:1px;margin-bottom:16px">SKILL PROFILE</div>
+      <div class="skill-section-flip">
+        <div class="skill-flip-label">PRIMARY SKILLS</div>
+        <div id="flipPrimary"></div>
+      </div>
+      <div class="skill-section-flip">
+        <div class="skill-flip-label">SECONDARY SKILLS</div>
+        <div id="flipSecondary"></div>
+      </div>
+      <div class="skill-section-flip">
+        <div class="skill-flip-label">SPECIAL SKILL</div>
+        <div id="flipSpecial"></div>
+      </div>
+      <div id="flipBars" style="margin-top:14px"></div>
+      <div style="text-align:center;font-size:11px;color:var(--text3);margin-top:12px">← Tap to go back</div>
+    </div>
+  </div>
+</div>
       <div class="card">
         <div class="card-head"><span class="card-title">Recent Activity</span><span class="badge-pill" id="recentCount">0</span></div>
         <ul class="task-list" id="recentActivity"></ul>
@@ -504,5 +535,6 @@
 </script>
 
 <script src="dashboard.js"></script>
+<script src="skills.js"></script>
 </body>
 </html>

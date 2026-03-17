@@ -1252,3 +1252,16 @@ input[type="time"] { color-scheme: dark; }
 @media(max-width:800px) {
   .meeting-form { grid-template-columns:1fr; }
 }
+/* ── Flip Card ── */
+.flip-card { perspective: 1000px; }
+.flip-inner { position: relative; width: 100%; min-height: 340px; transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.4,0,0.2,1); }
+.flip-card.flipped .flip-inner { transform: rotateY(180deg); }
+.flip-front, .flip-back { position: absolute; width: 100%; min-height: 340px; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 16px; }
+.flip-back { transform: rotateY(180deg); background: var(--bg2); }
+.skill-section-flip { margin-bottom: 12px; }
+.skill-flip-label { font-size: 10px; color: var(--text3); letter-spacing: 1.5px; margin-bottom: 6px; }
+.skill-tag-p { display:inline-block; padding:4px 12px; border-radius:999px; font-size:12px; margin:0 4px 6px 0; background:rgba(139,92,246,0.15); color:#a78bfa; border:1px solid rgba(139,92,246,0.3); }
+.skill-tag-s { display:inline-block; padding:4px 12px; border-radius:999px; font-size:12px; margin:0 4px 6px 0; background:rgba(16,185,129,0.15); color:#34d399; border:1px solid rgba(16,185,129,0.3); }
+.skill-tag-sp { display:inline-block; padding:4px 12px; border-radius:999px; font-size:12px; margin:0 4px 6px 0; background:rgba(245,158,11,0.15); color:#fbbf24; border:1px solid rgba(245,158,11,0.3); }
+.skill-bar-bg { background:rgba(255,255,255,0.05); border-radius:999px; height:5px; margin-bottom:10px; }
+.skill-bar-fill { height:5px; border-radius:999px; }
