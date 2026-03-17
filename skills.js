@@ -6,12 +6,8 @@ const teamSkills = {
   "praveenm.ad25@bitsathy.ac.in": {
     primary:   ["natural language processing", "IOT and sensor integration"],
     secondary: ["cloud computing", "cyber security and cryptography"],
-    special:   ["Generative AI (Gen AI)","User Experience (UI/UX) Design"],
-    bars: [
-      { name: "Python",     pct: 85, color: "#8b5cf6" },
-      { name: "ML",         pct: 75, color: "#10b981" },
-      { name: "Leadership", pct: 95, color: "#f59e0b" }
-    ]
+    special:   ["Generative AI (Gen AI)", "User Experience (UI/UX) Design"],
+    
   },
   "tarunkumarr.ad25@bitsathy.ac.in": {
     primary:   ["Agentic AI & LLM Optimization", "Cloud Computing"],
