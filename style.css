@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-
+body {
+  min-width: 1200px;
+}
 :root {
   --bg-main: #020617;
   --bg-card: #0f172a;
