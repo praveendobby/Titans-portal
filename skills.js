@@ -4,147 +4,79 @@
 
 const teamSkills = {
   "praveenm.ad25@bitsathy.ac.in": {
-    primary:   ["natural language processing", "IOT and sensor integration"],
-    secondary: ["cloud computing", "cyber security and cryptography"],
-    special:   ["Generative AI (Gen AI)", "User Experience (UI/UX) Design"],
-    
+    primary:   ["Natural Language Processing", "IOT & Sensor Integration"],
+    secondary: ["Cloud Computing", "Cyber Security & Cryptography"],
+    special:   ["Generative AI (Gen AI)", "User Experience (UI/UX) Design"]
   },
   "tarunkumarr.ad25@bitsathy.ac.in": {
     primary:   ["Agentic AI & LLM Optimization", "Cloud Computing"],
-    secondary: ["Blockchain Technology", "DevOps and IT Infra"],
-    special:  [ "Generative AI (Gen AI)","User Experience (UI/UX) Design"],
-    bars: [
-      { name: "React",  pct: 80, color: "#8b5cf6" },
-      { name: "JS",     pct: 85, color: "#10b981" },
-      { name: "Design", pct: 70, color: "#f59e0b" }
-    ]
+    secondary: ["Blockchain Technology", "DevOps & IT Infra"],
+    special:   ["Generative AI (Gen AI)", "User Experience (UI/UX) Design"]
   },
   "thayatharsann.ad25@bitsathy.ac.in": {
     primary:   ["Python", "Data Science"],
     secondary: ["Pandas", "NumPy"],
-    special:   "Data Visualization",
-    bars: [
-      { name: "Python",       pct: 80, color: "#8b5cf6" },
-      { name: "Data Science", pct: 75, color: "#10b981" },
-      { name: "Pandas",       pct: 70, color: "#f59e0b" }
-    ]
+    special:   ["Data Visualization"]
   },
   "tariqanvar.ad25@bitsathy.ac.in": {
     primary:   ["Python", "AI"],
     secondary: ["OpenCV", "TensorFlow"],
-    special:   "Computer Vision",
-    bars: [
-      { name: "Python",     pct: 78, color: "#8b5cf6" },
-      { name: "AI",         pct: 72, color: "#10b981" },
-      { name: "TensorFlow", pct: 65, color: "#f59e0b" }
-    ]
+    special:   ["Computer Vision"]
   },
   "dhivyadharshinis.ad25@bitsathy.ac.in": {
     primary:   ["UI/UX", "Figma"],
     secondary: ["HTML", "CSS"],
-    special:   "Prototyping",
-    bars: [
-      { name: "Figma", pct: 85, color: "#8b5cf6" },
-      { name: "UI/UX", pct: 80, color: "#10b981" },
-      { name: "HTML",  pct: 75, color: "#f59e0b" }
-    ]
+    special:   ["Prototyping"]
   },
   "keshanthv.cs25@bitsathy.ac.in": {
     primary:   ["C++", "DSA"],
     secondary: ["Python", "Java"],
-    special:   "Problem Solving",
-    bars: [
-      { name: "C++", pct: 88, color: "#8b5cf6" },
-      { name: "DSA", pct: 85, color: "#10b981" },
-      { name: "Java", pct: 72, color: "#f59e0b" }
-    ]
+    special:   ["Problem Solving"]
   },
   "vishnug.bt25@bitsathy.ac.in": {
     primary:   ["Bioinformatics", "Research"],
     secondary: ["Python", "Lab Analysis"],
-    special:   "Bio Data Analysis",
-    bars: [
-      { name: "Research", pct: 80, color: "#8b5cf6" },
-      { name: "Python",   pct: 65, color: "#10b981" },
-      { name: "Lab",      pct: 75, color: "#f59e0b" }
-    ]
+    special:   ["Bio Data Analysis"]
   },
   "subhashreeb.bt25@bitsathy.ac.in": {
     primary:   ["Research", "Documentation"],
     secondary: ["Data Collection", "Reporting"],
-    special:   "Technical Writing",
-    bars: [
-      { name: "Research", pct: 82, color: "#8b5cf6" },
-      { name: "Docs",     pct: 78, color: "#10b981" },
-      { name: "Reporting",pct: 74, color: "#f59e0b" }
-    ]
+    special:   ["Technical Writing"]
   },
   "anafasadana.bt25@bitsathy.ac.in": {
     primary:   ["Biology", "Lab Work"],
     secondary: ["Research", "Python"],
-    special:   "Experimental Design",
-    bars: [
-      { name: "Biology",  pct: 80, color: "#8b5cf6" },
-      { name: "Lab Work", pct: 78, color: "#10b981" },
-      { name: "Python",   pct: 55, color: "#f59e0b" }
-    ]
+    special:   ["Experimental Design"]
   },
   "akileshm25@bitsathy.ac.in": {
     primary:   ["Machine Learning", "Python"],
     secondary: ["Data Analysis", "R"],
-    special:   "Predictive Modeling",
-    bars: [
-      { name: "ML",     pct: 75, color: "#8b5cf6" },
-      { name: "Python", pct: 78, color: "#10b981" },
-      { name: "R",      pct: 65, color: "#f59e0b" }
-    ]
+    special:   ["Predictive Modeling"]
   },
   "shivashanthm.mz25@bitsathy.ac.in": {
     primary:   ["Mechatronics", "Arduino"],
     secondary: ["CAD", "Robotics"],
-    special:   "Hardware Integration",
-    bars: [
-      { name: "Arduino",     pct: 82, color: "#8b5cf6" },
-      { name: "Robotics",    pct: 75, color: "#10b981" },
-      { name: "CAD",         pct: 70, color: "#f59e0b" }
-    ]
+    special:   ["Hardware Integration"]
   },
   "muthamilselvan.it25@bitsathy.ac.in": {
     primary:   ["Web Dev", "Node.js"],
     secondary: ["React", "MongoDB"],
-    special:   "Full Stack Dev",
-    bars: [
-      { name: "Node.js", pct: 80, color: "#8b5cf6" },
-      { name: "React",   pct: 75, color: "#10b981" },
-      { name: "MongoDB", pct: 70, color: "#f59e0b" }
-    ]
+    special:   ["Full Stack Dev"]
   },
   "member13.ad25@bitsathy.ac.in": {
     primary:   ["Python", "AI"],
     secondary: ["Data Science", "ML"],
-    special:   "Deep Learning",
-    bars: [
-      { name: "Python", pct: 70, color: "#8b5cf6" },
-      { name: "AI",     pct: 65, color: "#10b981" }
-    ]
+    special:   ["Deep Learning"]
   },
   "member14.ad25@bitsathy.ac.in": {
     primary:   ["Python", "Data Analysis"],
     secondary: ["SQL", "Visualization"],
-    special:   "Statistical Modeling",
-    bars: [
-      { name: "Python", pct: 72, color: "#8b5cf6" },
-      { name: "SQL",    pct: 68, color: "#10b981" }
-    ]
+    special:   ["Statistical Modeling"]
   },
   "member15.ad25@bitsathy.ac.in": {
     primary:   ["Python", "NLP"],
     secondary: ["ML", "Data Science"],
-    special:   "Natural Language Processing",
-    bars: [
-      { name: "Python", pct: 74, color: "#8b5cf6" },
-      { name: "NLP",    pct: 68, color: "#10b981" }
-    ]
+    special:   ["Natural Language Processing"]
   }
 };
 
@@ -171,7 +103,7 @@ function loadFlipCard() {
   const flipBackName = document.getElementById("flipBackName");
   if (flipBackName) flipBackName.textContent = user.name || "";
 
-  // --- SYNC STATS FROM PROFILE (wait for dashboard to load them) ---
+  // --- SYNC STATS FROM PROFILE ---
   setTimeout(() => {
     const done    = document.getElementById("perfDone")?.textContent    || "0";
     const pending = document.getElementById("perfPending")?.textContent || "0";
@@ -209,6 +141,9 @@ function loadFlipCard() {
   const flipSpecial   = document.getElementById("flipSpecial");
   const flipBars      = document.getElementById("flipBars");
 
+  // hide bars section since bars are removed
+  if (flipBars) flipBars.style.display = "none";
+
   if (skills) {
     if (flipPrimary) {
       flipPrimary.innerHTML = skills.primary
@@ -219,24 +154,17 @@ function loadFlipCard() {
         .map(s => `<span class="tag-s">${s}</span>`).join("");
     }
     if (flipSpecial) {
-      flipSpecial.innerHTML = `<span class="tag-sp">★ ${skills.special}</span>`;
-    }
-    if (flipBars) {
-      flipBars.innerHTML = skills.bars.map(b => `
-        <div class="flip-bar-row">
-          <div class="flip-bar-top">
-            <span>${b.name}</span><span>${b.pct}%</span>
-          </div>
-          <div class="flip-bar-bg">
-            <div class="flip-bar-fill" style="width:${b.pct}%;background:${b.color}"></div>
-          </div>
-        </div>`).join("");
+      // handles both array and string formats safely
+      const specialArr = Array.isArray(skills.special)
+        ? skills.special
+        : [skills.special];
+      flipSpecial.innerHTML = specialArr
+        .map(s => `<span class="tag-sp">★ ${s}</span>`).join("");
     }
   } else {
     if (flipPrimary)   flipPrimary.innerHTML   = `<span class="tag-p">Not set</span>`;
     if (flipSecondary) flipSecondary.innerHTML = `<span class="tag-s">Not set</span>`;
     if (flipSpecial)   flipSpecial.innerHTML   = `<span class="tag-sp">★ Not set</span>`;
-    if (flipBars)      flipBars.innerHTML      = `<div style="font-size:12px;color:var(--text3)">No skill bars added yet</div>`;
   }
 }
 
