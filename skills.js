@@ -4,9 +4,9 @@
 
 const teamSkills = {
   "praveenm.ad25@bitsathy.ac.in": {
-    primary:   ["Machine Learning", "Python"],
-    secondary: ["Data Analysis", "SQL"],
-    special:   "Team Leadership",
+    primary:   ["natural language processing", "IOT and sensor integration"],
+    secondary: ["cloud computing", "cyber security and cryptography"],
+    special:   ["Generative AI (Gen AI)","User Experience (UI/UX) Design"],
     bars: [
       { name: "Python",     pct: 85, color: "#8b5cf6" },
       { name: "ML",         pct: 75, color: "#10b981" },
@@ -14,9 +14,9 @@ const teamSkills = {
     ]
   },
   "tarunkumarr.ad25@bitsathy.ac.in": {
-    primary:   ["React", "JavaScript"],
-    secondary: ["Firebase", "CSS"],
-    special:   "UI Design",
+    primary:   ["Agentic AI & LLM Optimization", "Cloud Computing"],
+    secondary: ["Blockchain Technology", "DevOps and IT Infra"],
+    special:  [ "Generative AI (Gen AI)","User Experience (UI/UX) Design"],
     bars: [
       { name: "React",  pct: 80, color: "#8b5cf6" },
       { name: "JS",     pct: 85, color: "#10b981" },

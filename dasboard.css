@@ -1259,9 +1259,8 @@ input[type="time"] { color-scheme: dark; }
 .flip-back { transform:rotateY(180deg); }
 
 /* hover lift effect */
-.flip-card:hover .flip-inner { transform:translateY(-4px) scale(1.01); box-shadow:0 12px 40px rgba(139,92,246,0.2); }
-.flip-card.flipped:hover .flip-inner { transform:rotateY(180deg) translateY(-4px) scale(1.01); }
-
+.flip-card:hover .flip-inner { transform:translateY(-4px); box-shadow:0 12px 40px rgba(139,92,246,0.2); }
+.flip-card.flipped:hover .flip-inner { transform:rotateY(180deg) translateY(-4px); }
 /* glint sweep */
 .flip-glint { position:absolute; top:0; left:-100%; width:60%; height:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.025),transparent); animation:glint 3s ease-in-out infinite; pointer-events:none; z-index:1; border-radius:16px; }
 @keyframes glint { 0%{left:-100%} 100%{left:200%} }
