@@ -357,54 +357,54 @@
       <div id="reportContent"></div>
     </div>
   </section>
-
 <div class="profile-wrap">
 
-  <!-- LEFT COLUMN -->
-  <div style="display:flex;flex-direction:column;gap:20px">
-
-    <!-- existing profile card - unchanged -->
-    <div class="card profile-card">
-      <div class="prof-banner"><div class="prof-banner-text">TITANS</div></div>
-      <div class="prof-photo-ring"><div class="prof-photo" id="profPhoto"></div></div>
-      <div class="prof-body">
-        <div class="prof-name" id="profileName"></div>
-        <div class="prof-desig" id="profileDesig"></div>
-        <div id="profileBadges" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:16px"></div>
-        <div class="streak-row" id="streakRow"></div>
-        <div class="prof-stats-row">
-          <div class="prof-mini-stat"><div class="prof-mini-num green" id="perfDone">0</div><div class="prof-mini-label">Done</div></div>
-          <div class="prof-mini-stat"><div class="prof-mini-num amber" id="perfPending">0</div><div class="prof-mini-label">Pending</div></div>
-          <div class="prof-mini-stat"><div class="prof-mini-num" id="perfTotal">0</div><div class="prof-mini-label">Total</div></div>
-          <div class="prof-mini-stat"><div class="prof-mini-num gold" id="perfRank">#—</div><div class="prof-mini-label">Rank</div></div>
-        </div>
-        <div class="points-row">
-          <div class="pts-icon">⭐</div>
-          <div class="pts-info">
-            <div class="pts-num" id="totalPoints">0</div>
-            <div class="pts-lbl">Points Earned</div>
-          </div>
-        </div>
-        <div class="prof-rows">
-          <div class="prof-row"><span class="prof-lbl">🏛 Department</span><span class="prof-val" id="pDept"></span></div>
-          <div class="prof-row"><span class="prof-lbl">👥 Team</span><span class="prof-val" id="pTeam"></span></div>
-          <div class="prof-row"><span class="prof-lbl"># Group ID</span><span class="prof-val" id="pGroup"></span></div>
-          <div class="prof-row"><span class="prof-lbl">🎓 Reg No</span><span class="prof-val" id="pReg"></span></div>
-          <div class="prof-row"><span class="prof-lbl">⚡ Role</span><span class="prof-val" id="pRole"></span></div>
-        </div>
-        <div class="prof-bar-wrap">
-          <div class="prof-bar-top"><span>Completion Rate</span><span id="perfPct">0%</span></div>
-          <div class="prof-bar-bg"><div class="prof-bar-fill" id="perfBar"></div></div>
-        </div>
-        <button class="btn-danger" onclick="logout()">⏻ Logout</button>
+  <!-- LEFT — existing profile card (unchanged) -->
+  <div class="card profile-card">
+    <div class="prof-banner"><div class="prof-banner-text">TITANS</div></div>
+    <div class="prof-photo-ring"><div class="prof-photo" id="profPhoto"></div></div>
+    <div class="prof-body">
+      <div class="prof-name" id="profileName"></div>
+      <div class="prof-desig" id="profileDesig"></div>
+      <div id="profileBadges" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:16px"></div>
+      <div class="streak-row" id="streakRow"></div>
+      <div class="prof-stats-row">
+        <div class="prof-mini-stat"><div class="prof-mini-num green" id="perfDone">0</div><div class="prof-mini-label">Done</div></div>
+        <div class="prof-mini-stat"><div class="prof-mini-num amber" id="perfPending">0</div><div class="prof-mini-label">Pending</div></div>
+        <div class="prof-mini-stat"><div class="prof-mini-num" id="perfTotal">0</div><div class="prof-mini-label">Total</div></div>
+        <div class="prof-mini-stat"><div class="prof-mini-num gold" id="perfRank">#—</div><div class="prof-mini-label">Rank</div></div>
       </div>
+      <div class="points-row">
+        <div class="pts-icon">⭐</div>
+        <div class="pts-info">
+          <div class="pts-num" id="totalPoints">0</div>
+          <div class="pts-lbl">Points Earned</div>
+        </div>
+      </div>
+      <div class="prof-rows">
+        <div class="prof-row"><span class="prof-lbl">🏛 Department</span><span class="prof-val" id="pDept"></span></div>
+        <div class="prof-row"><span class="prof-lbl">👥 Team</span><span class="prof-val" id="pTeam"></span></div>
+        <div class="prof-row"><span class="prof-lbl"># Group ID</span><span class="prof-val" id="pGroup"></span></div>
+        <div class="prof-row"><span class="prof-lbl">🎓 Reg No</span><span class="prof-val" id="pReg"></span></div>
+        <div class="prof-row"><span class="prof-lbl">⚡ Role</span><span class="prof-val" id="pRole"></span></div>
+      </div>
+      <div class="prof-bar-wrap">
+        <div class="prof-bar-top"><span>Completion Rate</span><span id="perfPct">0%</span></div>
+        <div class="prof-bar-bg"><div class="prof-bar-fill" id="perfBar"></div></div>
+      </div>
+      <button class="btn-danger" onclick="logout()">⏻ Logout</button>
     </div>
+  </div>
+
+  <!-- RIGHT — skill card on top, recent activity below -->
+  <div style="display:flex;flex-direction:column;gap:20px">
 
     <!-- SKILL FLIP CARD -->
     <div class="flip-card" id="profileFlipCard" onclick="this.classList.toggle('flipped')">
       <div class="flip-inner">
 
-        <div class="flip-front card" style="padding:0;overflow:hidden;cursor:pointer;height:100%">
+        <!-- FRONT -->
+        <div class="flip-front card" style="padding:0;overflow:hidden;height:100%">
           <div class="flip-glint"></div>
           <div style="padding:20px 20px 14px;border-bottom:1px solid var(--border)">
             <div style="font-size:17px;font-weight:700;color:var(--text)" id="flipFrontName"></div>
@@ -422,12 +422,13 @@
             <div style="margin-top:14px;display:flex;align-items:center;gap:8px">
               <div style="flex:1;height:1px;background:var(--border)"></div>
               <span style="font-size:10px;color:var(--text3);letter-spacing:1px">SKILL CARD</span>
-              <span style="color:#8b5cf6;font-size:14px" class="flip-arrow">→</span>
+              <span class="flip-arrow" style="color:#8b5cf6;font-size:14px">→</span>
             </div>
           </div>
         </div>
 
-        <div class="flip-back card" style="cursor:pointer;height:100%;transform:rotateY(180deg);padding:20px">
+        <!-- BACK -->
+        <div class="flip-back card" style="height:100%;transform:rotateY(180deg);padding:20px">
           <div style="border-bottom:1px solid var(--border);padding-bottom:12px;margin-bottom:14px">
             <div style="font-size:15px;font-weight:700;color:var(--text)" id="flipBackName"></div>
             <div style="font-size:9px;color:#8b5cf6;letter-spacing:3px;margin-top:2px">SKILL PROFILE</div>
@@ -451,55 +452,17 @@
       </div>
     </div>
 
-  </div>
+    <!-- RECENT ACTIVITY — below skill card -->
+    <div class="card">
+      <div class="card-head"><span class="card-title">Recent Activity</span><span class="badge-pill" id="recentCount">0</span></div>
+      <ul class="task-list" id="recentActivity"></ul>
+      <div class="empty-state" id="recentEmpty" style="display:none"><span>📋</span><p>No activity yet</p></div>
+    </div>
 
-  <!-- RIGHT COLUMN — Recent Activity -->
-  <div class="card">
-    <div class="card-head"><span class="card-title">Recent Activity</span><span class="badge-pill" id="recentCount">0</span></div>
-    <ul class="task-list" id="recentActivity"></ul>
-    <div class="empty-state" id="recentEmpty" style="display:none"><span>📋</span><p>No activity yet</p></div>
   </div>
 
 </div>
-     <div class="flip-card" id="profileFlipCard">
-  <div class="flip-inner">
-    <div class="flip-front card" style="padding:0;overflow:hidden;cursor:pointer" onclick="document.getElementById('profileFlipCard').classList.toggle('flipped')">
-      <div style="background:linear-gradient(135deg,#2d1b69,#4a2a8a);height:60px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;letter-spacing:6px;color:rgba(255,255,255,0.15)">TITANS</div>
-      <div style="padding:16px;text-align:center">
-        <div class="prof-photo" id="flipFrontPhoto" style="margin:0 auto 10px"></div>
-        <div style="font-size:16px;font-weight:600;color:var(--text)" id="flipFrontName"></div>
-        <div style="font-size:11px;color:#8b5cf6;letter-spacing:2px;margin-top:2px" id="flipFrontRole"></div>
-        <div style="font-size:12px;color:var(--text3);margin-top:6px" id="flipFrontDept"></div>
-        <div style="margin-top:16px;font-size:11px;color:var(--text3)">Tap to see skills →</div>
-      </div>
-    </div>
-    <div class="flip-back card" style="padding:20px;cursor:pointer" onclick="document.getElementById('profileFlipCard').classList.toggle('flipped')">
-      <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px" id="flipBackName"></div>
-      <div style="font-size:11px;color:#8b5cf6;letter-spacing:1px;margin-bottom:16px">SKILL PROFILE</div>
-      <div class="skill-section-flip">
-        <div class="skill-flip-label">PRIMARY SKILLS</div>
-        <div id="flipPrimary"></div>
-      </div>
-      <div class="skill-section-flip">
-        <div class="skill-flip-label">SECONDARY SKILLS</div>
-        <div id="flipSecondary"></div>
-      </div>
-      <div class="skill-section-flip">
-        <div class="skill-flip-label">SPECIAL SKILL</div>
-        <div id="flipSpecial"></div>
-      </div>
-      <div id="flipBars" style="margin-top:14px"></div>
-      <div style="text-align:center;font-size:11px;color:var(--text3);margin-top:12px">← Tap to go back</div>
-    </div>
-  </div>
-</div>
-      <div class="card">
-        <div class="card-head"><span class="card-title">Recent Activity</span><span class="badge-pill" id="recentCount">0</span></div>
-        <ul class="task-list" id="recentActivity"></ul>
-        <div class="empty-state" id="recentEmpty" style="display:none"><span>📋</span><p>No activity yet</p></div>
-      </div>
-
-    </div>
+    
   </section>
 
 </div><!-- /main -->
