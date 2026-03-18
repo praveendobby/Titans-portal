@@ -12,6 +12,14 @@
 ============================================================ */
 
 const FIREBASE_URL = "https://titans-portal-8b124-default-rtdb.firebaseio.com";
+window.addEventListener("DOMContentLoaded", () => {
+  const savedImage = localStorage.getItem("profilePhoto");
+
+  if (savedImage) {
+    document.getElementById("profPhoto").style.backgroundImage = `url(${savedImage})`;
+    document.getElementById("topbarAvatar").style.backgroundImage = `url(${savedImage})`;
+  }
+});
 
 /* ══════════════════════════════════════════════════════
    REST API HELPERS (primary write/read layer)

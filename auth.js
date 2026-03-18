@@ -305,5 +305,24 @@ atob(base64)
 .join('')
 )
 );
+function uploadProfilePhoto(event) {
+  const file = event.target.files[0];
 
+  if (!file) return;
+
+  const reader = new FileReader();
+
+  reader.onload = function (e) {
+    const base64Image = e.target.result;
+
+    // SAVE permanently
+    localStorage.setItem("profilePhoto", base64Image);
+
+    // SHOW instantly
+    document.getElementById("profPhoto").style.backgroundImage = `url(${base64Image})`;
+    document.getElementById("topbarAvatar").style.backgroundImage = `url(${base64Image})`;
+  };
+
+  reader.readAsDataURL(file);
+}
 }
