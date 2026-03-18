@@ -117,20 +117,6 @@ imgSrc: "img/suba.jpg"
 
 
 {
-email: "anafasadana.bt25@bitsathy.ac.in",
-password: "1234",
-role: "member",
-name: "Anafasadan A",
-phone: "916369990709",
-team: "TITANS",
-groupId: "A#100260",
-regNo: "7376252AD311",
-designation: "Member",
-department: "Bio Technology",
-imgSrc: "img/anafa.png"
-},
-
-{
 email: "akileshm25@bitsathy.ac.in",
 password: "1234",
 role: "member",
@@ -169,6 +155,20 @@ regNo: "7376252IT248",
 designation: "Member",
 department: "Information Technology",
 imgSrc: "img/muthu.jpg"
+},
+
+{
+email: "member25@bitsathy.ac.in",
+password: "1234",
+role: "member",
+name: "mem12",
+phone: "",
+team: "TITANS",
+groupId: "A#100260",
+regNo: "7376252AD311",
+designation: "Member",
+department: "Bio Technology",
+imgSrc: ""
 },
 {
 email: "member13.ad25@bitsathy.ac.in",
