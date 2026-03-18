@@ -1,5 +1,5 @@
 /* ==============================
-   TITANS — ALL TEAM MEMBERS
+   TITANS — ALL 15 TEAM MEMBERS
 ============================== */
 
 const teamUsers = [
@@ -21,7 +21,7 @@ imgSrc: "img/praveen.png"
 email: "tarunkumarr.ad25@bitsathy.ac.in",
 password: "1234",
 role: "vice captain",
-name: "Tarun Kumar",
+name: "Tarun Kumar ",
 phone: "91",
 team: "TITANS",
 groupId: "A#100260",
@@ -115,6 +115,7 @@ department: "Bio Technology",
 imgSrc: "img/suba.jpg"
 },
 
+
 {
 email: "akileshm25@bitsathy.ac.in",
 password: "1234",
@@ -128,7 +129,6 @@ designation: "Member",
 department: "Bio Technology",
 imgSrc: "img/akil.jpg"
 },
-
 {
 email: "shivashanthm.mz25@bitsathy.ac.in",
 password: "1234",
@@ -155,21 +155,81 @@ regNo: "7376252IT248",
 designation: "Member",
 department: "Information Technology",
 imgSrc: "img/muthu.jpg"
-}
+},
 
+{
+email: "member25@bitsathy.ac.in",
+password: "1234",
+role: "member",
+name: "mem12",
+phone: "",
+team: "TITANS",
+groupId: "A#100260",
+regNo: "7376252AD311",
+designation: "Member",
+department: "Bio Technology",
+imgSrc: ""
+},
+{
+email: "member13.ad25@bitsathy.ac.in",
+password: "1234",
+role: "member",
+name: "mem13",
+phone: "916369990709",
+team: "TITANS",
+groupId: "A#100260",
+regNo: "7376252AD213",
+designation: "Member",
+department: "Artificial Intelligence & Data Science",
+imgSrc: ""
+},
+
+{
+email: "member14.ad25@bitsathy.ac.in",
+password: "1234",
+role: "member",
+name: "mem14",
+phone: "916369990709",
+team: "TITANS",
+groupId: "A#100260",
+regNo: "7376252AD219",
+designation: "Member",
+department: "Artificial Intelligence & Data Science",
+imgSrc: ""
+},
+
+{
+email: "member15.ad25@bitsathy.ac.in",
+password: "1234",
+role: "member",
+name: "mem15",
+phone: "916369990709",
+team: "TITANS",
+groupId: "A#100260",
+regNo: "7376252AD209",
+designation: "Member",
+department: "Artificial Intelligence & Data Science",
+imgSrc: ""
+}
 ];
 
+
 /* ==============================
-   SINGLE SOURCE OF TRUTH
+   SAVE TEAM USERS
+============================== */
+/* ==============================
+   USE CODE AS SOURCE (NO CONFLICT)
 ============================== */
 
-const users = teamUsers; // ✅ NO localStorage dependency
+const users = teamUsers; // ✅ direct source (no localStorage read)
 
-// Optional: store copy (not used for logic)
+/* ==============================
+   OPTIONAL: store copy (not used for logic)
+============================== */
 localStorage.setItem("teamUsers", JSON.stringify(teamUsers));
 
 /* ==============================
-   EMAIL LOGIN
+   EMAIL + PASSWORD LOGIN
 ============================== */
 
 function login() {
@@ -188,7 +248,7 @@ function login() {
     window.location.href = "dashboard.html";
   } else {
     error.textContent = "Invalid email or password.";
-    setTimeout(() => error.textContent = "", 3000);
+    setTimeout(() => (error.textContent = ""), 3000);
   }
 }
 
@@ -210,12 +270,12 @@ function handleCredentialResponse(response) {
     window.location.href = "dashboard.html";
   } else {
     error.textContent = "Access denied. Only TITANS members can login.";
-    setTimeout(() => error.textContent = "", 4000);
+    setTimeout(() => (error.textContent = ""), 4000);
   }
 }
 
 /* ==============================
-   JWT PARSER
+   DECODE GOOGLE JWT
 ============================== */
 
 function parseJwt(token) {
@@ -234,7 +294,7 @@ function parseJwt(token) {
 }
 
 /* ==============================
-   PROFILE PHOTO
+   PROFILE PHOTO (FIXED POSITION)
 ============================== */
 
 function uploadProfilePhoto(event) {
