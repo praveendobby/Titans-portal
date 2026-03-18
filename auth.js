@@ -120,7 +120,7 @@ imgSrc: "img/suba.jpg"
 email: "anafasadana.bt25@bitsathy.ac.in",
 password: "1234",
 role: "member",
-name: "Aafasadan A",
+name: "Anafasadan A",
 phone: "916369990709",
 team: "TITANS",
 groupId: "A#100260",
