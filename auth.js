@@ -217,10 +217,7 @@ imgSrc: ""
 /* ==============================
    SAVE TEAM USERS
 ============================== */
-
-if (!localStorage.getItem("teamUsers")) {
-  localStorage.setItem("teamUsers", JSON.stringify(teamUsers));
-}
+localStorage.setItem("teamUsers", JSON.stringify(teamUsers));
 
 const users = JSON.parse(localStorage.getItem("teamUsers"));
 
