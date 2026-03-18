@@ -14,19 +14,19 @@ const teamSkills = {
     special:   ["Generative AI (Gen AI)", "User Experience (UI/UX) Design"]
   },
   "thayatharsann.ad25@bitsathy.ac.in": {
-    primary:   ["Python", "Data Science"],
-    secondary: ["Pandas", "NumPy"],
-    special:   ["Data Visualization"]
+    primary:   ["Big Data Analytics and Machine learning", "devOps and IT Infra"],
+    secondary: ["Agentic AI", "LLM optimization"],
+    special:   ["Prompt engineering", "Report Writing"]
   },
   "tariqanvar.ad25@bitsathy.ac.in": {
-    primary:   ["Python", "AI"],
-    secondary: ["OpenCV", "TensorFlow"],
-    special:   ["Computer Vision"]
+    primary:   ["Full-Stack Software Development", "Cloud Computing"],
+    secondary: ["DevOps and IT Infra", "Agentic Ai"],
+    special:   ["Product thinking", "Creativity"]
   },
   "dhivyadharshinis.ad25@bitsathy.ac.in": {
-    primary:   ["UI/UX", "Figma"],
-    secondary: ["HTML", "CSS"],
-    special:   ["Prototyping"]
+    primary:   ["Bio Informatics", "Data Analytics"],
+    secondary: ["Edge AI", "Robot System Integration"],
+    special:   ["Generative AI (GEN AI)", "Prompt Engineering"]
   },
   "keshanthv.cs25@bitsathy.ac.in": {
     primary:   ["C++", "DSA"],
@@ -44,9 +44,9 @@ const teamSkills = {
     special:   ["Technical Writing"]
   },
   "anafasadana.bt25@bitsathy.ac.in": {
-    primary:   ["Biology", "Lab Work"],
-    secondary: ["Research", "Python"],
-    special:   ["Experimental Design"]
+    primary:   ["Bioinformatics and data analytics", " Molecular biology"],
+    secondary: [" Bio process", " Microbial and plant"],
+    special:   [" Research methodology", "Business profile intelligence"]
   },
   "akileshm25@bitsathy.ac.in": {
     primary:   ["Machine Learning", "Python"],
