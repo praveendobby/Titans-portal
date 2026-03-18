@@ -127,7 +127,7 @@ groupId: "A#100260",
 regNo: "7376252AD311",
 designation: "Member",
 department: "Bio Technology",
-imgSrc: "img/anafa.jpg"
+imgSrc: "img/anafasadan.jpg"
 },
 
 {
