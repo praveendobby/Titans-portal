@@ -102,7 +102,7 @@ imgSrc: "img/vishnu.jpg"
 },
 
 {
-email: "subhashreeb.bt25@bitsathy.ac.in",
+email: "subashreeb.bt25@bitsathy.ac.in",
 password: "1234",
 role: "member",
 name: "Subashree B",
