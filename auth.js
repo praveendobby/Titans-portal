@@ -117,7 +117,7 @@ imgSrc: "img/suba.jpg"
 
 
 {
-email: "akileshm25@bitsathy.ac.in",
+email: "akileshm.bt25@bitsathy.ac.in",
 password: "1234",
 role: "member",
 name: "Akilesh M",
@@ -144,7 +144,7 @@ imgSrc: "img/shiva.jpeg"
 },
 
 {
-email: "muthamilselvan.it25@bitsathy.ac.in",
+email: "muthamilselvanm.it25@bitsathy.ac.in",
 password: "1234",
 role: "member",
 name: "Muthamil Selvan",
