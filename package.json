@@ -1,0 +1,13 @@
+{
+  "name": "titans-portal",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.80.0",
+    "express": "^5.2.1"
+  }
+}
