@@ -25,34 +25,41 @@ window.addEventListener("DOMContentLoaded", () => {
    REST API HELPERS (primary write/read layer)
 ══════════════════════════════════════════════════════ */
 const rest = {
+  getToken() {
+    return localStorage.getItem("firebaseToken") || "";
+  },
+  authParam() {
+    const t = this.getToken();
+    return t ? `?auth=${t}` : "";
+  },
   async get(path) {
-    const r = await fetch(FIREBASE_URL + path + ".json");
+    const r = await fetch(FIREBASE_URL + path + ".json" + this.authParam());
     return r.json();
   },
   async put(path, data) {
-    return fetch(FIREBASE_URL + path + ".json", {
+    return fetch(FIREBASE_URL + path + ".json" + this.authParam(), {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
     });
   },
   async patch(path, data) {
-    return fetch(FIREBASE_URL + path + ".json", {
+    return fetch(FIREBASE_URL + path + ".json" + this.authParam(), {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
     });
   },
   async post(path, data) {
-    const r = await fetch(FIREBASE_URL + path + ".json", {
+    const r = await fetch(FIREBASE_URL + path + ".json" + this.authParam(), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
     });
-    return r.json(); // { name: "firebaseKey" }
+    return r.json();
   },
   async del(path) {
-    return fetch(FIREBASE_URL + path + ".json", { method: "DELETE" });
+    return fetch(FIREBASE_URL + path + ".json" + this.authParam(), { method: "DELETE" });
   }
 };
 

@@ -231,86 +231,55 @@ localStorage.setItem("teamUsers", JSON.stringify(teamUsers));
 /* ==============================
    EMAIL + PASSWORD LOGIN
 ============================== */
-
-function login() {
+async function login() {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
   const error = document.getElementById("errorMessage");
-
   error.textContent = "";
 
-  const user = users.find(
-    u => u.email === email && u.password === password
-  );
+  // Check against your team list first
+  const user = users.find(u => u.email === email && u.password === password);
 
-  if (user) {
-    localStorage.setItem("user", JSON.stringify(user));
-    window.location.href = "dashboard.html";
-  } else {
+  if (!user) {
     error.textContent = "Invalid email or password.";
     setTimeout(() => (error.textContent = ""), 3000);
+    return;
   }
-}
 
-/* ==============================
-   GOOGLE LOGIN
-============================== */
+  // Sign into Firebase Auth so REST calls work
+  try {
+    const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js");
+    const { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js");
 
-function handleCredentialResponse(response) {
-  const userData = parseJwt(response.credential);
-  const email = userData.email;
-  const error = document.getElementById("errorMessage");
+    const firebaseConfig = {
+      apiKey: "AIzaSyCaInB1din3Z6iiGJZIG6J7b9U2ASnfgsY",
+      authDomain: "titans-portal-8b124.firebaseapp.com",
+      databaseURL: "https://titans-portal-8b124-default-rtdb.firebaseio.com",
+      projectId: "titans-portal-8b124",
+      storageBucket: "titans-portal-8b124.firebasestorage.app",
+      messagingSenderId: "248684743938",
+      appId: "1:248684743938:web:7500d46e42bf3a5205061b"
+    };
 
-  error.textContent = "";
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
-  const user = users.find(u => u.email === email);
+    // Try sign in, if fails create the account
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch {
+      await createUserWithEmailAndPassword(auth, email, password);
+    }
 
-  if (user) {
-    localStorage.setItem("user", JSON.stringify(user));
-    window.location.href = "dashboard.html";
-  } else {
-    error.textContent = "Access denied. Only TITANS members can login.";
-    setTimeout(() => (error.textContent = ""), 4000);
+    // Get token and save it
+    const token = await auth.currentUser.getIdToken();
+    localStorage.setItem("firebaseToken", token);
+
+  } catch (e) {
+    console.warn("Firebase auth failed, continuing anyway:", e.message);
   }
-}
 
-/* ==============================
-   DECODE GOOGLE JWT
-============================== */
-
-function parseJwt(token) {
-  const base64 = token.split('.')[1]
-    .replace(/-/g, '+')
-    .replace(/_/g, '/');
-
-  return JSON.parse(
-    decodeURIComponent(
-      atob(base64)
-        .split('')
-        .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-        .join('')
-    )
-  );
-}
-
-/* ==============================
-   PROFILE PHOTO (FIXED POSITION)
-============================== */
-
-function uploadProfilePhoto(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-
-  const reader = new FileReader();
-
-  reader.onload = function (e) {
-    const base64Image = e.target.result;
-
-    localStorage.setItem("profilePhoto", base64Image);
-
-    document.getElementById("profPhoto").style.backgroundImage = `url(${base64Image})`;
-    document.getElementById("topbarAvatar").style.backgroundImage = `url(${base64Image})`;
-  };
-
-  reader.readAsDataURL(file);
+  // Save user and redirect
+  localStorage.setItem("user", JSON.stringify(user));
+  window.location.href = "dashboard.html";
 }
