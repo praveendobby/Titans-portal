@@ -3,25 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=1200">
- <title>Titans Portal - Team Management System</title>
-
-<meta name="description" content="Titans Portal is a team management system for tasks, members, and collaboration.">
-
-<meta name="keywords" content="Titans Portal, team management, task manager, Titans">
-
-<meta name="author" content="Titans Team">
-<meta name="google-site-verification" content="eutEHVzGDbbnSkUlJ7p9mNimwNv7bJkXCkwYkcLv4iE" />
+  <title>Titans Portal - Team Management System</title>
+  <meta name="description" content="Titans Portal is a team management system for tasks, members, and collaboration.">
+  <meta name="keywords" content="Titans Portal, team management, task manager, Titans">
+  <meta name="author" content="Titans Team">
+  <meta name="google-site-verification" content="eutEHVzGDbbnSkUlJ7p9mNimwNv7bJkXCkwYkcLv4iE" />
   <link rel="stylesheet" href="style.css" />
   <link rel="manifest" href="manifest.json" />
-<meta name="theme-color" content="#8b5cf6" />
-<meta name="apple-mobile-web-app-title" content="TITANS" />
-<link rel="icon" type="image/png" href="img/titans-icon.png" />
+  <meta name="theme-color" content="#8b5cf6" />
+  <meta name="apple-mobile-web-app-title" content="TITANS" />
+  <link rel="icon" type="image/png" href="img/titans-icon.png" />
 
-  <!-- ================================================
-    Google Sign-In Script
-    This must load BEFORE the page renders for the
-    Google button to appear correctly on Live Server.
-  ================================================ -->
+  <!-- ✅ Load auth.js FIRST so handleCredentialResponse exists -->
+  <script src="auth.js"></script>
+
+  <!-- ✅ Load Google Sign-In AFTER auth.js -->
   <script src="https://accounts.google.com/gsi/client"></script>
 
 </head>
@@ -38,48 +34,22 @@
 
     <!-- EMAIL / PASSWORD FORM -->
     <form id="loginForm" onsubmit="login(); return false;">
-
       <div class="input-wrap">
         <span class="input-icon">✉</span>
-        <input
-          type="email"
-          id="email"
-          placeholder="Team Email"
-          required
-          autocomplete="off"
-        />
+        <input type="email" id="email" placeholder="Team Email" required autocomplete="off" />
       </div>
-
       <div class="input-wrap">
         <span class="input-icon">🔒</span>
-        <input
-          type="password"
-          id="password"
-          placeholder="Password"
-          required
-          autocomplete="off"
-        />
+        <input type="password" id="password" placeholder="Password" required autocomplete="off" />
       </div>
-
       <button type="submit" class="login-btn">Login →</button>
-
       <p id="errorMessage" class="error-message"></p>
-
     </form>
 
     <!-- DIVIDER -->
     <div class="divider"><span>OR</span></div>
 
-    <!-- ================================================
-      GOOGLE SIGN-IN BUTTON
-      ⚠️  This button ONLY shows when you open the page
-          using Live Server (http://127.0.0.1:5500)
-          It will NOT show if you open by double-clicking
-          the file (file://).
-
-      data-client_id → your Google OAuth Client ID
-      Keep this as-is — it's already set for TITANS.
-    ================================================ -->
+    <!-- GOOGLE SIGN-IN BUTTON -->
     <div
       id="g_id_onload"
       data-client_id="92364977850-hngkiov4is4n3q2n5qa0pkb6ugqnq2uo.apps.googleusercontent.com"
@@ -99,26 +69,9 @@
       data-width="310">
     </div>
 
-    
-
-    <!-- footer -->
     <p class="login-footer">Access restricted to TITANS members only</p>
 
   </div>
-
-  
-
-  <!-- Auth logic — handles both email login and Google login -->
-  <script src="auth.js"></script>
-
-  <!-- ================================================
-    If Google button still doesn't show:
-    1. Make sure you opened via Live Server
-    2. Go to console.cloud.google.com
-    3. APIs & Services → Credentials → your OAuth ID
-    4. Add http://127.0.0.1:5500 to Authorized JavaScript origins
-    5. Save and wait 2 minutes then refresh
-  ================================================ -->
 
 </body>
 </html>
