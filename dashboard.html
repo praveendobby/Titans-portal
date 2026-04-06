@@ -38,6 +38,9 @@
     <li onclick="showSection('meetings',this)" title="Meetings">
       <span class="nav-icon">📅</span><span class="nav-label">Meetings</span>
     </li>
+       <li onclick="showSection('polls', this)">
+  <span>🗳️</span> Polls
+</li>
     <li onclick="showSection('analytics',this)" id="analyticsNav" style="display:none" title="Analytics">
       <span class="nav-icon">📊</span><span class="nav-label">Analytics</span>
     </li>
@@ -273,6 +276,9 @@
 
   <!-- ═══ NOTICE BOARD ═══ -->
   <section id="sec-noticeboard" class="section">
+    <div class="section" id="sec-polls">
+  <div id="pollContainer"></div>
+</div>
 
     <!-- Captain: Post news -->
     <div class="card" id="newsPostCard" style="display:none;margin-bottom:20px">
@@ -609,5 +615,6 @@
 <script src="dashboard.js"></script>
 <script src="skills.js"></script>
 <script src="voice-notes.js"></script>
+<script src="team-poll.js"></script>
 </body>
 </html>

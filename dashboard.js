@@ -495,6 +495,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                   analytics:renderAnalytics,profile:renderProfile,
                   meetings:renderMeetings,noticeboard:renderNewsFeed};
     fns[name]?.();
+    if(active==="sec-polls") TitansPoll.renderPollSection("pollContainer");
+    polls: () => TitansPoll.renderPollSection("pollContainer"),
   };
 
   /* ══════════════════════════════════════════════════════
