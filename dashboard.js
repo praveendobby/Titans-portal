@@ -719,7 +719,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         <div class="task-actions">
           ${!isCaptain&&t.member===user.name&&(!t.status||t.status==="pending"||t.status==="rejected")?
             `<button class="task-btn submit-btn" onclick="openSubmitModal('${t.id}')" title="Submit work">📤</button>`:""}
+            ${VoiceNotes.getButtonHTML(t.id, t.voiceNotes)}
           <button class="task-btn comment-btn" onclick="openCommentModal('${t.id}')" title="Comments">💬${(t.comments||[]).length>0?`<span class="comment-count">${(t.comments||[]).length}</span>`:""}</button>
+
           ${isCaptain?`
             <button class="task-btn reassign-btn" onclick="openReassignModal('${t.id}')" title="Reassign">↔</button>
             <button class="task-btn del" onclick="deleteById('${t.id}','${t._fbId||""}')" title="Delete">
