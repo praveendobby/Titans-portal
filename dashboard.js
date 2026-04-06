@@ -9,52 +9,43 @@
    ✅ Task submission/review/reject fully synced cross-device
    ✅ Comments, reassign, meetings, news all synced
    ✅ Duplicate notification prevention
+   ✅ Team Poll + Voice Notes integrated
 ============================================================ */
 
 const FIREBASE_URL = "https://titans-portal-8b124-default-rtdb.firebaseio.com";
 window.addEventListener("DOMContentLoaded", () => {
   const savedImage = localStorage.getItem("profilePhoto");
-
   if (savedImage) {
-    document.getElementById("profPhoto").style.backgroundImage = `url(${savedImage})`;
-    document.getElementById("topbarAvatar").style.backgroundImage = `url(${savedImage})`;
+    const p = document.getElementById("profPhoto");
+    const a = document.getElementById("topbarAvatar");
+    if (p) p.style.backgroundImage = `url(${savedImage})`;
+    if (a) a.style.backgroundImage = `url(${savedImage})`;
   }
 });
 
 /* ══════════════════════════════════════════════════════
-   REST API HELPERS (primary write/read layer)
+   REST API HELPERS
 ══════════════════════════════════════════════════════ */
 const rest = {
-  getToken() {
-    return localStorage.getItem("firebaseToken") || "";
-  },
-  authParam() {
-    const t = this.getToken();
-    return t ? `?auth=${t}` : "";
-  },
+  getToken() { return localStorage.getItem("firebaseToken") || ""; },
+  authParam() { const t = this.getToken(); return t ? `?auth=${t}` : ""; },
   async get(path) {
     const r = await fetch(FIREBASE_URL + path + ".json" + this.authParam());
     return r.json();
   },
   async put(path, data) {
     return fetch(FIREBASE_URL + path + ".json" + this.authParam(), {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
+      method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data)
     });
   },
   async patch(path, data) {
     return fetch(FIREBASE_URL + path + ".json" + this.authParam(), {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
+      method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data)
     });
   },
   async post(path, data) {
     const r = await fetch(FIREBASE_URL + path + ".json" + this.authParam(), {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
+      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data)
     });
     return r.json();
   },
@@ -71,9 +62,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   showLoadingScreen();
 
-  /* ══════════════════════════════════════════════════════
-     STEP 1: Push latest teamUsers → Firebase
-  ══════════════════════════════════════════════════════ */
   let teamUsers = JSON.parse(localStorage.getItem("teamUsers")) || [];
 
   if (teamUsers.length > 0) {
@@ -86,9 +74,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     rest.put("/titans/team", safe).catch(() => {});
   }
 
-  /* ══════════════════════════════════════════════════════
-     STEP 2: Read back from Firebase → merge
-  ══════════════════════════════════════════════════════ */
   try {
     const data = await rest.get("/titans/team");
     if (data && Array.isArray(data) && data.length > 0) {
@@ -102,9 +87,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   } catch(e) {}
 
-  /* ══════════════════════════════════════════════════════
-     STEP 3: Refresh current user with latest data
-  ══════════════════════════════════════════════════════ */
   const freshUser = teamUsers.find(u => u.email === user.email);
   if (freshUser) {
     user = { ...user, ...freshUser, password: user.password };
@@ -116,20 +98,16 @@ document.addEventListener("DOMContentLoaded", async () => {
   const isCaptain = user.role === "captain" || user.role === "vice captain";
   const FB = window._FB || { hasFirebase: false };
 
-  /* ── State ── */
   let tasks  = [];
   let meta   = {};
   let prevIds = new Set();
   let prevMeetingIds = new Set();
   let firstLoad = true;
-
   let activeSubmitTaskId   = null;
   let activeReviewTaskId   = null;
   let activeCommentTaskId  = null;
   let activeReassignTaskId = null;
   let selectedPoints = 5;
-
-  /* ── Polling state ── */
   let _pollTasksHash = '';
   let _pollMetaHash  = '';
 
@@ -290,10 +268,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   updateCountdown(); setInterval(updateCountdown, 1000);
 
   /* ══════════════════════════════════════════════════════
-     REST POLLING — core fix for captain seeing member changes
+     REST POLLING
   ══════════════════════════════════════════════════════ */
   async function pollFirebase() {
-    /* ── Poll Tasks ── */
     try {
       const tasksData = await rest.get("/titans/tasks");
       if (tasksData) {
@@ -304,34 +281,34 @@ document.addEventListener("DOMContentLoaded", async () => {
           _pollTasksHash = newHash;
 
           if (!firstLoad) {
-            /* New task assigned to me */
             fresh.filter(t=>t.member===user.name&&!prevIds.has(String(t.id))).forEach(t=>{
               addNotif(`📌 New task: "${t.text}" — by ${t.assignedBy}`,t.priority);
               showToast(`🔔 New task: "${t.text}"`);
+              if(window.TitansPush) TitansPush.notifyNewTask(t.text, t.assignedBy);
             });
-            /* My task reviewed */
             fresh.filter(t=>t.member===user.name&&t.status==="reviewed").forEach(t=>{
               const old=tasks.find(x=>String(x.id)===String(t.id));
               if(old&&old.status!=="reviewed"){
                 addNotif(`⭐ "${t.text}" reviewed — +${t.points||0} pts!`,"normal");
                 showToast(`⭐ Task reviewed! +${t.points||0} pts`);
+                if(window.TitansPush) TitansPush.notifyTaskReviewed(t.text, t.points||0);
               }
             });
-            /* My task rejected */
             fresh.filter(t=>t.member===user.name&&t.status==="rejected").forEach(t=>{
               const old=tasks.find(x=>String(x.id)===String(t.id));
               if(old&&old.status!=="rejected"){
                 addNotif(`↩ "${t.text}" returned: ${t.reviewFeedback||"Please revise"}`,"normal");
                 showToast(`↩ Task returned for revision`);
+                if(window.TitansPush) TitansPush.notifyTaskRejected(t.text, t.reviewFeedback);
               }
             });
-            /* New submission (captain only) */
             if (isCaptain) {
               fresh.filter(t=>t.status==="submitted").forEach(t=>{
                 const old=tasks.find(x=>String(x.id)===String(t.id));
                 if(old&&old.status!=="submitted"){
                   addNotif(`📤 ${t.member} submitted: "${t.text}"`,"normal");
                   showToast(`📤 New submission from ${t.member}`);
+                  if(window.TitansPush) TitansPush.notifyNewSubmission(t.member, t.text);
                 }
               });
             }
@@ -345,7 +322,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     } catch(e) {}
 
-    /* ── Poll Meta ── */
     try {
       const freshMeta = await rest.get("/titans/meta");
       if (freshMeta) {
@@ -358,6 +334,7 @@ document.addEventListener("DOMContentLoaded", async () => {
               if(!prevMeetingIds.has(String(m.id))){
                 addNotif(`📅 Meeting: "${m.title}" on ${m.date} at ${m.time} — ${m.venue}`,"normal");
                 showToast(`📅 New meeting: "${m.title}"`);
+                if(window.TitansPush) TitansPush.notifyNewMeeting(m.title, m.date, m.time, m.venue);
               }
             });
             prevMeetingIds = new Set((freshMeta.meetings||[]).map(m=>String(m.id)));
@@ -376,20 +353,18 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function startRestPolling() {
-    setTimeout(pollFirebase, 1500);        // quick first poll
-    setInterval(pollFirebase, 8000);       // then every 8 s
+    setTimeout(pollFirebase, 1500);
+    setInterval(pollFirebase, 8000);
   }
 
   /* ══════════════════════════════════════════════════════
      FIREBASE REAL-TIME LISTENERS
   ══════════════════════════════════════════════════════ */
   function startFirebase() {
-    /* Always start REST polling regardless of SDK availability */
     setSyncBadge("live");
     startRestPolling();
 
     if (!FB.hasFirebase) {
-      /* Load from local first, then REST polling takes over */
       tasks = loadLocal("titans_tasks",[]);
       meta  = loadLocal("titans_meta",{});
       firstLoad = false;
@@ -399,7 +374,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    /* Firebase SDK listeners (real-time, instant) */
     FB.onValue(FB.tasksRef, snap => {
       const data  = snap.val();
       const fresh = data ? Object.entries(data).map(([fbId,v])=>({...v,_fbId:fbId})) : [];
@@ -466,7 +440,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }, ()=>{ meta=loadLocal("titans_meta",{}); });
   }
 
-  /* ── Boot render ── */
   function bootRender() {
     renderHome(); renderTasks(); renderPendingReviews(); checkBadges();
     const active = document.querySelector(".section.active")?.id;
@@ -476,27 +449,45 @@ document.addEventListener("DOMContentLoaded", async () => {
     if(active==="sec-profile")     renderProfile();
     if(active==="sec-meetings")    renderMeetings();
     if(active==="sec-noticeboard") renderNewsFeed();
+    if(active==="sec-polls")       { if(window.TitansPoll) TitansPoll.renderPollSection("pollContainer"); }
   }
 
   /* ══════════════════════════════════════════════════════
-     SECTION SWITCHING
+     SECTION SWITCHING — FIXED
   ══════════════════════════════════════════════════════ */
   window.showSection = (name, el) => {
-    document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
-    document.querySelectorAll(".sidebar li").forEach(l=>l.classList.remove("active"));
-    document.getElementById("sec-"+name)?.classList.add("active");
+    document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+    document.querySelectorAll(".sidebar li").forEach(l => l.classList.remove("active"));
+    document.getElementById("sec-" + name)?.classList.add("active");
     if (el) el.classList.add("active");
-    const titles={home:"Dashboard",tasks:"Tasks",members:"Team Members",
-                  leaderboard:"Leaderboard",noticeboard:"Notice Board",
-                  meetings:"Meetings",analytics:"Analytics",profile:"Profile"};
-    document.getElementById("sectionTitle").textContent = titles[name]||name;
-    const fns = {home:renderHome,tasks:()=>{renderTasks();renderPendingReviews();},
-                  members:renderMembers,leaderboard:renderLeaderboard,
-                  analytics:renderAnalytics,profile:renderProfile,
-                  meetings:renderMeetings,noticeboard:renderNewsFeed};
-    fns[name]?.();
-    if(active==="sec-polls") TitansPoll.renderPollSection("pollContainer");
-    polls: () => TitansPoll.renderPollSection("pollContainer"),
+
+    const titles = {
+      home: "Dashboard",
+      tasks: "Tasks",
+      members: "Team Members",
+      leaderboard: "Leaderboard",
+      noticeboard: "Notice Board",
+      meetings: "Meetings",
+      analytics: "Analytics",
+      profile: "Profile",
+      polls: "Team Polls"
+    };
+    const titleEl = document.getElementById("sectionTitle");
+    if (titleEl) titleEl.textContent = titles[name] || name;
+
+    const fns = {
+      home:        renderHome,
+      tasks:       () => { renderTasks(); renderPendingReviews(); },
+      members:     renderMembers,
+      leaderboard: renderLeaderboard,
+      analytics:   renderAnalytics,
+      profile:     renderProfile,
+      meetings:    renderMeetings,
+      noticeboard: renderNewsFeed,
+      polls:       () => { if (window.TitansPoll) TitansPoll.renderPollSection("pollContainer"); }
+    };
+
+    if (fns[name]) fns[name]();
   };
 
   /* ══════════════════════════════════════════════════════
@@ -517,6 +508,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     renderAnnouncement();
     document.getElementById("annInput").value = "";
     showToast("📢 Announcement posted!");
+    if(window.TitansPush) TitansPush.notifyAnnouncement(txt, user.name);
   };
 
   function renderAnnouncement() {
@@ -675,6 +667,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     ["taskInput","dueDateInput","fileLinkInput"].forEach(id=>{const el=document.getElementById(id);if(el)el.value="";});
     showToast("✅ Task assigned to "+member);
+    if(window.TitansPush) TitansPush.notifyNewTask(text, user.name);
     showWhatsAppBtn(member,text,priority,dueDate);
   };
 
@@ -721,9 +714,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         <div class="task-actions">
           ${!isCaptain&&t.member===user.name&&(!t.status||t.status==="pending"||t.status==="rejected")?
             `<button class="task-btn submit-btn" onclick="openSubmitModal('${t.id}')" title="Submit work">📤</button>`:""}
-            ${VoiceNotes.getButtonHTML(t.id, t.voiceNotes)}
+          ${window.VoiceNotes ? VoiceNotes.getButtonHTML(t.id, t.voiceNotes) : ""}
           <button class="task-btn comment-btn" onclick="openCommentModal('${t.id}')" title="Comments">💬${(t.comments||[]).length>0?`<span class="comment-count">${(t.comments||[]).length}</span>`:""}</button>
-
           ${isCaptain?`
             <button class="task-btn reassign-btn" onclick="openReassignModal('${t.id}')" title="Reassign">↔</button>
             <button class="task-btn del" onclick="deleteById('${t.id}','${t._fbId||""}')" title="Delete">
@@ -737,14 +729,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     if(!isCaptain||!confirm("Delete this task?")) return;
     const row=document.getElementById("task-"+taskId);
     if(row){row.style.transition="all 0.35s ease";row.style.opacity="0";row.style.transform="translateX(40px) scale(0.95)";row.style.maxHeight=row.offsetHeight+"px";setTimeout(()=>{row.style.maxHeight="0";row.style.padding="0";row.style.margin="0";},200);await new Promise(r=>setTimeout(r,420));}
-
     let deleted = false;
     if(FB.hasFirebase&&fbId){ try{ await FB.remove(FB.ref(FB.db,`titans/tasks/${fbId}`)); deleted=true; }catch{} }
     if(!deleted&&fbId){ try{ await rest.del(`/titans/tasks/${fbId}`); deleted=true; }catch{} }
-    if(!deleted){
-      tasks=tasks.filter(t=>String(t.id)!==String(taskId));
-      saveLocal("titans_tasks",tasks); bootRender();
-    }
+    if(!deleted){ tasks=tasks.filter(t=>String(t.id)!==String(taskId)); saveLocal("titans_tasks",tasks); bootRender(); }
   };
 
   /* ══════════════════════════════════════════════════════
@@ -769,7 +757,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     t.status="submitted"; t.submissionNote=note; t.submissionLink=link;
     t.submittedAt=new Date().toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit"});
     closeSubmitModal(); showToast("📤 Submitted for review!");
-
     const upd={status:"submitted",submissionNote:note,submissionLink:link,submittedAt:t.submittedAt};
     let saved=false;
     if(FB.hasFirebase&&t._fbId){ try{ await FB.update(FB.ref(FB.db,`titans/tasks/${t._fbId}`),upd); saved=true; }catch{} }
@@ -826,7 +813,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     t.reviewFeedback=fb;t.reviewedBy=user.name;
     t.reviewedAt=new Date().toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit"});
     closeReviewModal(); showToast(`✅ Approved! +${selectedPoints} pts to ${t.member}`);
-
+    if(window.TitansPush) TitansPush.notifyTaskReviewed(t.text, selectedPoints);
     const upd={status:"reviewed",done:true,points:selectedPoints,reviewFeedback:fb,reviewedBy:user.name,reviewedAt:t.reviewedAt};
     let saved=false;
     if(FB.hasFirebase&&t._fbId){ try{ await FB.update(FB.ref(FB.db,`titans/tasks/${t._fbId}`),upd); saved=true; }catch{} }
@@ -841,7 +828,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const fb=document.getElementById("reviewFeedback")?.value.trim()||"Please revise and resubmit"; if(!t) return;
     t.status="rejected"; t.reviewFeedback=fb;
     closeReviewModal(); showToast(`↩ Returned to ${t.member}`);
-
+    if(window.TitansPush) TitansPush.notifyTaskRejected(t.text, fb);
     const upd={status:"rejected",reviewFeedback:fb};
     let saved=false;
     if(FB.hasFirebase&&t._fbId){ try{ await FB.update(FB.ref(FB.db,`titans/tasks/${t._fbId}`),upd); saved=true; }catch{} }
@@ -951,6 +938,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     ["meetingTitle","meetingDate","meetingTime","meetingVenue","meetingLink"].forEach(id=>{const el=document.getElementById(id);if(el)el.value="";});
     renderMeetings(); renderHomeUpcomingMeetings();
     showToast("📅 Meeting scheduled!");
+    if(window.TitansPush) TitansPush.notifyNewMeeting(title, date, time, venue);
   };
 
   function renderMeetings() {
@@ -1031,6 +1019,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     renderNewsFeed(); renderHomeLatestNews();
     showToast("📰 Update posted!");
     addNotif(`📰 New update: "${title}"`,"normal");
+    if(window.TitansPush) TitansPush.notifyNewNews(title, user.name);
   };
 
   function renderNewsFeed() {
@@ -1082,7 +1071,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     btn.disabled=true;btn.textContent="✨ Thinking…";
     results.innerHTML=`<div style="font-size:13px;color:var(--text3);padding:8px">🤖 Generating tasks…</div>`;
     try{
-      const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:`Break down into 5 specific tasks.\nGoal: "${goal}"\nTeam: ${teamUsers.map(u=>u.name+"("+u.designation+")").join(", ")}\nRespond ONLY with JSON array: [{"task":"...","member":"...","priority":"high/medium/normal/low"}]`}]})});
+      const res=await fetch("/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:[{role:"user",content:`Break down into 5 specific tasks.\nGoal: "${goal}"\nTeam: ${teamUsers.map(u=>u.name+"("+u.designation+")").join(", ")}\nRespond ONLY with JSON array: [{"task":"...","member":"...","priority":"high/medium/normal/low"}]`}]})});
       const data=await res.json();
       const raw=data.content?.[0]?.text||"[]";
       const suggested=JSON.parse(raw.replace(/```json|```/g,"").trim());
@@ -1124,7 +1113,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const c={author:user.name,text:inp.value.trim(),time:new Date().toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit"})};
     if(!t.comments) t.comments=[];
     t.comments.push(c); inp.value=""; renderComments(t);
-
     let saved=false;
     if(FB.hasFirebase&&t._fbId){ try{ await FB.update(FB.ref(FB.db,`titans/tasks/${t._fbId}`),{comments:t.comments}); saved=true; }catch{} }
     if(!saved&&t._fbId){ try{ await rest.patch(`/titans/tasks/${t._fbId}`,{comments:t.comments}); saved=true; }catch{} }
@@ -1149,7 +1137,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const newMem=document.getElementById("reassignSelect")?.value; if(!t||!newMem) return;
     t.member=newMem;t.status="pending";t.done=false;
     closeReassignModal(); showToast(`↔ Reassigned to ${newMem}`);
-
     const upd={member:newMem,status:"pending",done:false};
     let saved=false;
     if(FB.hasFirebase&&t._fbId){ try{ await FB.update(FB.ref(FB.db,`titans/tasks/${t._fbId}`),upd); saved=true; }catch{} }
@@ -1318,7 +1305,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   let notifs=loadLocal("titans_notifs_"+user.name,[]);
   function saveNotifs(){saveLocal("titans_notifs_"+user.name,notifs);}
   function addNotif(msg,priority){
-    /* Prevent duplicate notifs within 30s */
     const recent=notifs.find(n=>n.msg===msg);
     if(recent) return;
     notifs.unshift({msg,priority:priority||"normal",time:new Date().toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit"}),read:false});
@@ -1362,6 +1348,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     t.textContent=msg;t.style.opacity="1";t.style.transform="translateY(0)";
     clearTimeout(t._tmr);t._tmr=setTimeout(()=>{t.style.opacity="0";t.style.transform="translateY(8px)";},3000);
   }
+
+  window.showToast = showToast;
 
   /* ── Logout ── */
   window.logout=()=>{if(confirm("Logout from TITANS?")){localStorage.removeItem("user");window.location.href="index.html";}};

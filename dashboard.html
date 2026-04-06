@@ -7,12 +7,10 @@
   <link rel="icon" type="image/png" href="img/titans-icon.png" />
   <link rel="stylesheet" href="dasboard.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <!-- Titan AI Chatbot -->
-<link rel="stylesheet" href="titan-chat.css" />
-<script src="titan-chat.js"></script>
+  <link rel="stylesheet" href="titan-chat.css" />
 </head>
 <body>
- 
+
 <!-- SIDEBAR -->
 <div class="sidebar">
   <div class="sidebar-logo">
@@ -38,9 +36,9 @@
     <li onclick="showSection('meetings',this)" title="Meetings">
       <span class="nav-icon">📅</span><span class="nav-label">Meetings</span>
     </li>
-       <li onclick="showSection('polls', this)">
-  <span>🗳️</span> Polls
-</li>
+    <li onclick="showSection('polls',this)" title="Team Polls">
+      <span class="nav-icon">🗳️</span><span class="nav-label">Polls</span>
+    </li>
     <li onclick="showSection('analytics',this)" id="analyticsNav" style="display:none" title="Analytics">
       <span class="nav-icon">📊</span><span class="nav-label">Analytics</span>
     </li>
@@ -86,22 +84,16 @@
 
   <!-- ═══ HOME ═══ -->
   <section id="sec-home" class="section active">
-
-    <!-- Announcement Banner -->
     <div id="announcementBanner" style="display:none" class="announcement-banner">
       <span class="ann-icon">📢</span>
       <span id="annText"></span>
       <span onclick="dismissAnnouncement()" style="cursor:pointer;margin-left:auto;opacity:0.6">✕</span>
     </div>
-
-    <!-- Sprint Countdown -->
     <div class="countdown-card">
       <div class="cd-label">⏱ Sprint 14 ends in</div>
       <div class="cd-timer" id="cdTimer">-- -- -- --</div>
       <div class="cd-bar-bg"><div class="cd-bar-fill" id="cdBarFill"></div></div>
     </div>
-
-    <!-- Stat cards -->
     <div class="stat-grid">
       <div class="stat-card" style="--accent:#8b5cf6">
         <div class="stat-icon">👥</div>
@@ -120,15 +112,12 @@
         <div class="stat-info"><div class="stat-label">My Tasks</div><div class="stat-val" id="statTotal">0</div></div>
       </div>
     </div>
-
     <div class="grid-2">
-      <!-- My Tasks -->
       <div class="card">
         <div class="card-head"><span class="card-title">My Tasks</span><span class="badge-pill" id="myTaskCount">0</span></div>
         <ul class="task-list" id="homeTaskList"></ul>
         <div class="empty-state" id="homeEmpty" style="display:none"><span>🎯</span><p>No tasks assigned yet</p></div>
       </div>
-      <!-- Team Progress + Workload -->
       <div class="card">
         <div class="card-head"><span class="card-title">Team Progress</span></div>
         <div id="teamProgressBars"></div>
@@ -138,8 +127,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Upcoming Meeting + News -->
     <div class="grid-2">
       <div class="card">
         <div class="card-head"><span class="card-title">📅 Upcoming Meetings</span></div>
@@ -150,8 +137,6 @@
         <div id="homeLatestNews"></div>
       </div>
     </div>
-
-    <!-- Standup + Heatmap -->
     <div class="grid-2">
       <div class="card">
         <div class="card-head"><span class="card-title">📋 Daily Standup</span><span id="standupDate" style="font-size:11px;color:var(--text3)"></span></div>
@@ -162,16 +147,11 @@
         <div id="heatmap"></div>
       </div>
     </div>
-
   </section>
 
   <!-- ═══ TASKS ═══ -->
   <section id="sec-tasks" class="section">
-
-    <!-- Captain tools -->
     <div id="captainTools" style="display:none">
-
-      <!-- Announcement -->
       <div class="card" style="margin-bottom:20px">
         <div class="card-head"><span class="card-title">📢 Post Announcement</span><span class="badge-pill captain-badge">Captain Access</span></div>
         <div class="ann-form">
@@ -179,8 +159,6 @@
           <button class="btn-primary" onclick="postAnnouncement()">📢 Post</button>
         </div>
       </div>
-
-      <!-- AI Task Suggester -->
       <div class="card" style="margin-bottom:20px">
         <div class="card-head">
           <span class="card-title">🤖 AI Task Suggester</span>
@@ -192,8 +170,6 @@
         </div>
         <div id="aiResults" style="margin-top:14px"></div>
       </div>
-
-      <!-- Assign Task -->
       <div class="card" id="assignCard" style="margin-bottom:20px">
         <div class="card-head"><span class="card-title">Assign Task</span><span class="role-badge captain-badge">⚡ Captain Access</span></div>
         <div class="assign-form">
@@ -211,8 +187,6 @@
         </div>
         <div id="wa-btn-wrap" style="display:none;margin-top:12px"></div>
       </div>
-
-      <!-- Pending Reviews -->
       <div class="card" id="reviewCard" style="margin-bottom:20px">
         <div class="card-head">
           <span class="card-title">🔍 Pending Reviews</span>
@@ -222,10 +196,7 @@
           <div class="empty-state"><span>✅</span><p>No submissions to review</p></div>
         </div>
       </div>
-
     </div>
-
-    <!-- Task list -->
     <div class="card">
       <div class="card-head">
         <span class="card-title" id="taskListTitle">My Tasks</span>
@@ -250,7 +221,6 @@
       <ul class="task-list full" id="taskList"></ul>
       <div class="empty-state" id="taskEmpty" style="display:none"><span>📭</span><p>No tasks found</p></div>
     </div>
-
   </section>
 
   <!-- ═══ MEMBERS ═══ -->
@@ -276,11 +246,6 @@
 
   <!-- ═══ NOTICE BOARD ═══ -->
   <section id="sec-noticeboard" class="section">
-    <div class="section" id="sec-polls">
-  <div id="pollContainer"></div>
-</div>
-
-    <!-- Captain: Post news -->
     <div class="card" id="newsPostCard" style="display:none;margin-bottom:20px">
       <div class="card-head"><span class="card-title">📰 Post News / Update</span><span class="badge-pill captain-badge">Captain Access</span></div>
       <div class="news-post-form">
@@ -301,16 +266,11 @@
         </div>
       </div>
     </div>
-
-    <!-- News feed -->
     <div id="newsFeed"></div>
-
   </section>
 
   <!-- ═══ MEETINGS ═══ -->
   <section id="sec-meetings" class="section">
-
-    <!-- Captain: Schedule meeting -->
     <div class="card" id="meetingPostCard" style="display:none;margin-bottom:20px">
       <div class="card-head"><span class="card-title">📅 Schedule Meeting</span><span class="badge-pill captain-badge">Captain Access</span></div>
       <div class="meeting-form">
@@ -329,8 +289,6 @@
         <button class="btn-primary" onclick="scheduleMeeting()">📅 Schedule</button>
       </div>
     </div>
-
-    <!-- Meetings list -->
     <div class="card">
       <div class="card-head">
         <span class="card-title">📅 All Meetings</span>
@@ -344,7 +302,11 @@
       </div>
       <div id="meetingsList"></div>
     </div>
+  </section>
 
+  <!-- ═══ POLLS ═══ -->
+  <section id="sec-polls" class="section">
+    <div id="pollContainer"></div>
   </section>
 
   <!-- ═══ ANALYTICS (Captain Only) ═══ -->
@@ -370,151 +332,117 @@
 
   <!-- ═══ PROFILE ═══ -->
   <section id="sec-profile" class="section">
-  <div class="profile-wrap">
-
-    <!-- LEFT — Profile Card -->
-    <div class="card profile-card">
-      <div class="prof-banner">
-        <div class="prof-banner-text">TITANS</div>
-      </div>
-
-      <div class="prof-photo-ring">
-        <div class="prof-photo" id="profPhoto"></div>
-      </div>
-
-      <div class="prof-body">
-        <div class="prof-name" id="profileName"></div>
-        <div class="prof-desig" id="profileDesig"></div>
-
-        <div id="profileBadges" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:16px"></div>
-
-        <div class="streak-row" id="streakRow"></div>
-
-        <div class="prof-stats-row">
-          <div class="prof-mini-stat">
-            <div class="prof-mini-num green" id="perfDone">0</div>
-            <div class="prof-mini-label">Done</div>
-          </div>
-          <div class="prof-mini-stat">
-            <div class="prof-mini-num amber" id="perfPending">0</div>
-            <div class="prof-mini-label">Pending</div>
-          </div>
-          <div class="prof-mini-stat">
-            <div class="prof-mini-num" id="perfTotal">0</div>
-            <div class="prof-mini-label">Total</div>
-          </div>
-          <div class="prof-mini-stat">
-            <div class="prof-mini-num gold" id="perfRank">#—</div>
-            <div class="prof-mini-label">Rank</div>
-          </div>
+    <div class="profile-wrap">
+      <div class="card profile-card">
+        <div class="prof-banner">
+          <div class="prof-banner-text">TITANS</div>
         </div>
-
-        <div class="points-row">
-          <div class="pts-icon">⭐</div>
-          <div class="pts-info">
-            <div class="pts-num" id="totalPoints">0</div>
-            <div class="pts-lbl">Points Earned</div>
-          </div>
+        <div class="prof-photo-ring">
+          <div class="prof-photo" id="profPhoto"></div>
         </div>
-
-        <div class="prof-rows">
-          <div class="prof-row"><span class="prof-lbl">🏛 Department</span><span class="prof-val" id="pDept"></span></div>
-          <div class="prof-row"><span class="prof-lbl">👥 Team</span><span class="prof-val" id="pTeam"></span></div>
-          <div class="prof-row"><span class="prof-lbl"># Group ID</span><span class="prof-val" id="pGroup"></span></div>
-          <div class="prof-row"><span class="prof-lbl">🎓 Reg No</span><span class="prof-val" id="pReg"></span></div>
-          <div class="prof-row"><span class="prof-lbl">⚡ Role</span><span class="prof-val" id="pRole"></span></div>
-        </div>
-
-        <div class="prof-bar-wrap">
-          <div class="prof-bar-top">
-            <span>Completion Rate</span>
-            <span id="perfPct">0%</span>
-          </div>
-          <div class="prof-bar-bg">
-            <div class="prof-bar-fill" id="perfBar"></div>
-          </div>
-        </div>
-
-        <button class="btn-danger" onclick="logout()">⏻ Logout</button>
-      </div>
-    </div>
-
-    <!-- RIGHT — Skill Card + Recent Activity -->
-    <div style="display:flex;flex-direction:column;gap: 60px;width:350px">
-
-      <!-- SKILL CARD -->
-      <div class="flip-card" id="profileFlipCard" onclick="this.classList.toggle('flipped')">
-        <div class="flip-inner">
-
-          <!-- FRONT -->
-          <div class="flip-front card" style="padding:0;overflow:hidden;height:100%">
-            <div class="flip-glint"></div>
-
-            <div style="padding:20px 20px 14px;border-bottom:1px solid var(--border)">
-              <div style="font-size:17px;font-weight:700;color:var(--text)" id="flipFrontName"></div>
-              <div style="font-size:10px;color:#8b5cf6;letter-spacing:3px;font-weight:600;margin-top:2px" id="flipFrontRole"></div>
-              <div style="font-size:11px;color:var(--text3);margin-top:5px" id="flipFrontDept"></div>
+        <div class="prof-body">
+          <div class="prof-name" id="profileName"></div>
+          <div class="prof-desig" id="profileDesig"></div>
+          <div id="profileBadges" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:16px"></div>
+          <div class="streak-row" id="streakRow"></div>
+          <div class="prof-stats-row">
+            <div class="prof-mini-stat">
+              <div class="prof-mini-num green" id="perfDone">0</div>
+              <div class="prof-mini-label">Done</div>
             </div>
-
-            <div style="display:flex;border-bottom:1px solid var(--border)">
-              <div class="fsc-stat"><div class="fsc-val green" id="f2Done">0</div><div class="fsc-lbl">DONE</div></div>
-              <div class="fsc-stat" style="border-left:1px solid var(--border);border-right:1px solid var(--border)">
-                <div class="fsc-val amber" id="f2Pending">0</div><div class="fsc-lbl">PENDING</div>
-              </div>
-              <div class="fsc-stat" style="border-right:1px solid var(--border)">
-                <div class="fsc-val" id="f2Total">0</div><div class="fsc-lbl">TOTAL</div>
-              </div>
-              <div class="fsc-stat">
-                <div class="fsc-val gold" id="f2Rank">#—</div><div class="fsc-lbl">RANK</div>
-              </div>
+            <div class="prof-mini-stat">
+              <div class="prof-mini-num amber" id="perfPending">0</div>
+              <div class="prof-mini-label">Pending</div>
             </div>
-
-            <div style="padding:14px 20px">
-              <div id="flipStreakChip"></div>
-              <div style="margin-top:14px;display:flex;align-items:center;gap:8px">
-                <div style="flex:1;height:1px;background:var(--border)"></div>
-                <span style="font-size:10px;color:var(--text3)">SKILL CARD</span>
-              </div>
+            <div class="prof-mini-stat">
+              <div class="prof-mini-num" id="perfTotal">0</div>
+              <div class="prof-mini-label">Total</div>
+            </div>
+            <div class="prof-mini-stat">
+              <div class="prof-mini-num gold" id="perfRank">#—</div>
+              <div class="prof-mini-label">Rank</div>
             </div>
           </div>
-
-          <!-- BACK -->
-          <div class="flip-back card" style="height:100%;transform:rotateY(180deg);padding:20px">
-            <div style="border-bottom:1px solid var(--border);padding-bottom:12px;margin-bottom:14px">
-              <div style="font-size:15px;font-weight:700;color:var(--text)" id="flipBackName"></div>
-              <div style="font-size:9px;color:#8b5cf6;letter-spacing:3px;margin-top:2px">SKILL PROFILE</div>
+          <div class="points-row">
+            <div class="pts-icon">⭐</div>
+            <div class="pts-info">
+              <div class="pts-num" id="totalPoints">0</div>
+              <div class="pts-lbl">Points Earned</div>
             </div>
-
-            <div><div class="skill-grp-lbl">PRIMARY</div><div id="flipPrimary"></div></div>
-            <div><div class="skill-grp-lbl">SECONDARY</div><div id="flipSecondary"></div></div>
-            <div><div class="skill-grp-lbl">SPECIAL</div><div id="flipSpecial"></div></div>
           </div>
-
+          <div class="prof-rows">
+            <div class="prof-row"><span class="prof-lbl">🏛 Department</span><span class="prof-val" id="pDept"></span></div>
+            <div class="prof-row"><span class="prof-lbl">👥 Team</span><span class="prof-val" id="pTeam"></span></div>
+            <div class="prof-row"><span class="prof-lbl"># Group ID</span><span class="prof-val" id="pGroup"></span></div>
+            <div class="prof-row"><span class="prof-lbl">🎓 Reg No</span><span class="prof-val" id="pReg"></span></div>
+            <div class="prof-row"><span class="prof-lbl">⚡ Role</span><span class="prof-val" id="pRole"></span></div>
+          </div>
+          <div class="prof-bar-wrap">
+            <div class="prof-bar-top">
+              <span>Completion Rate</span>
+              <span id="perfPct">0%</span>
+            </div>
+            <div class="prof-bar-bg">
+              <div class="prof-bar-fill" id="perfBar"></div>
+            </div>
+          </div>
+          <button class="btn-danger" onclick="logout()">⏻ Logout</button>
         </div>
       </div>
 
-      <!-- RECENT ACTIVITY -->
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">Recent Activity</span>
-          <span class="badge-pill" id="recentCount">0</span>
+      <div style="display:flex;flex-direction:column;gap:60px;width:350px">
+        <div class="flip-card" id="profileFlipCard" onclick="this.classList.toggle('flipped')">
+          <div class="flip-inner">
+            <div class="flip-front card" style="padding:0;overflow:hidden;height:100%">
+              <div class="flip-glint"></div>
+              <div style="padding:20px 20px 14px;border-bottom:1px solid var(--border)">
+                <div style="font-size:17px;font-weight:700;color:var(--text)" id="flipFrontName"></div>
+                <div style="font-size:10px;color:#8b5cf6;letter-spacing:3px;font-weight:600;margin-top:2px" id="flipFrontRole"></div>
+                <div style="font-size:11px;color:var(--text3);margin-top:5px" id="flipFrontDept"></div>
+              </div>
+              <div style="display:flex;border-bottom:1px solid var(--border)">
+                <div class="fsc-stat"><div class="fsc-val green" id="f2Done">0</div><div class="fsc-lbl">DONE</div></div>
+                <div class="fsc-stat" style="border-left:1px solid var(--border);border-right:1px solid var(--border)">
+                  <div class="fsc-val amber" id="f2Pending">0</div><div class="fsc-lbl">PENDING</div>
+                </div>
+                <div class="fsc-stat" style="border-right:1px solid var(--border)">
+                  <div class="fsc-val" id="f2Total">0</div><div class="fsc-lbl">TOTAL</div>
+                </div>
+                <div class="fsc-stat">
+                  <div class="fsc-val gold" id="f2Rank">#—</div><div class="fsc-lbl">RANK</div>
+                </div>
+              </div>
+              <div style="padding:14px 20px">
+                <div id="flipStreakChip"></div>
+                <div style="margin-top:14px;display:flex;align-items:center;gap:8px">
+                  <div style="flex:1;height:1px;background:var(--border)"></div>
+                  <span style="font-size:10px;color:var(--text3)">SKILL CARD</span>
+                </div>
+              </div>
+            </div>
+            <div class="flip-back card" style="height:100%;transform:rotateY(180deg);padding:20px">
+              <div style="border-bottom:1px solid var(--border);padding-bottom:12px;margin-bottom:14px">
+                <div style="font-size:15px;font-weight:700;color:var(--text)" id="flipBackName"></div>
+                <div style="font-size:9px;color:#8b5cf6;letter-spacing:3px;margin-top:2px">SKILL PROFILE</div>
+              </div>
+              <div><div class="skill-grp-lbl">PRIMARY</div><div id="flipPrimary"></div></div>
+              <div><div class="skill-grp-lbl">SECONDARY</div><div id="flipSecondary"></div></div>
+              <div><div class="skill-grp-lbl">SPECIAL</div><div id="flipSpecial"></div></div>
+            </div>
+          </div>
         </div>
 
-        <ul class="task-list" id="recentActivity"></ul>
-
-        <div class="empty-state" id="recentEmpty" style="display:none">
-          <span>📋</span>
-          <p>No activity yet</p>
+        <div class="card">
+          <div class="card-head">
+            <span class="card-title">Recent Activity</span>
+            <span class="badge-pill" id="recentCount">0</span>
+          </div>
+          <ul class="task-list" id="recentActivity"></ul>
+          <div class="empty-state" id="recentEmpty" style="display:none">
+            <span>📋</span><p>No activity yet</p>
+          </div>
         </div>
       </div>
-
-    </div>
-
-  </div>
-</section>
-
-      </div>
-
     </div>
   </section>
 
@@ -584,10 +512,8 @@
 
 <!-- ═══ FIREBASE ═══ -->
 <script type="module">
-  import { initializeApp }
-    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getDatabase, ref, onValue, push, update, remove, set }
-    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getDatabase, ref, onValue, push, update, remove, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
   const firebaseConfig = {
     apiKey:            "AIzaSyCaInB1din3Z6iiGJZIG6J7b9U2ASnfgsY",
@@ -600,7 +526,6 @@
   };
 
   const hasFirebase = !firebaseConfig.apiKey.includes("PASTE");
-
   let app, db, tasksRef, metaRef;
   if (hasFirebase) {
     app      = initializeApp(firebaseConfig);
@@ -616,5 +541,8 @@
 <script src="skills.js"></script>
 <script src="voice-notes.js"></script>
 <script src="team-poll.js"></script>
+<script src="push-notifications.js"></script>
+<script src="titan-chat.js"></script>
+
 </body>
 </html>
