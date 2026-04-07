@@ -34,7 +34,7 @@ imgSrc: "img/tarun.jpg"
 {
 email: "thayatharsann.ad25@bitsathy.ac.in",
 password: "1234",
-role: "member",
+role: "Team Strategist",
 name: "Thaya Tharsan N",
 phone: "91",
 team: "TITANS",
@@ -62,7 +62,7 @@ imgSrc: "img/tariq.jpg"
 {
 email: "dhivyadharshinis.ad25@bitsathy.ac.in",
 password: "1234",
-role: "member",
+role: " Team Manager",
 name: "Dhivya Dharshini S",
 phone: "91",
 team: "TITANS",
@@ -147,7 +147,7 @@ imgSrc: "img/shiva.jpeg"
 email: "muthamilselvanm.it25@bitsathy.ac.in",
 password: "1234",
 role: "member",
-name: "Muthamil Selvan",
+name: "Muthamil Selvan M",
 phone: "916369990709",
 team: "TITANS",
 groupId: "A#100260",
@@ -158,29 +158,29 @@ imgSrc: "img/muthu.jpg"
 },
 
 {
-email: "member25@bitsathy.ac.in",
+email: "rubikas.ad25@bitsathy.ac.in",
 password: "1234",
 role: "member",
-name: "mem12",
+name: "Rubika S",
 phone: "",
 team: "TITANS",
 groupId: "A#100260",
-regNo: "7376252AD311",
+regNo: "7376252AD297",
 designation: "Member",
-department: "Bio Technology",
+department: "Artificial Intelligence & Data Science",
 imgSrc: ""
 },
 {
-email: "member13.ad25@bitsathy.ac.in",
+email: "roshinim.it25@bitsathy.ac.in",
 password: "1234",
 role: "member",
-name: "mem13",
+name: "Roshini M",
 phone: "916369990709",
 team: "TITANS",
 groupId: "A#100260",
 regNo: "7376252AD213",
 designation: "Member",
-department: "Artificial Intelligence & Data Science",
+department: "Information Technology",
 imgSrc: ""
 },
 
