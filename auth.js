@@ -168,7 +168,7 @@ groupId: "A#100260",
 regNo: "7376252AD297",
 designation: "Member",
 department: "Artificial Intelligence & Data Science",
-imgSrc: ""
+imgSrc: "img/rubika.jpeg"
 },
 {
 email: "roshinim.it25@bitsathy.ac.in",

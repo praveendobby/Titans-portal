@@ -34,24 +34,24 @@ const teamSkills = {
     special:   ["Problem Solving"]
   },
   "vishnug.bt25@bitsathy.ac.in": {
-    primary:   ["Bioinformatics", "Research"],
-    secondary: ["Python", "Lab Analysis"],
-    special:   ["Bio Data Analysis"]
+    primary:   ["Bio-Process Engineering", "Digital Signal Processing"],
+    secondary: ["Cyber Security and Cryptography", "Molecular Biology and Genetic Engineering"],
+    special:   ["Report writing", "Research methodology"]
   },
   "subhashreeb.bt25@bitsathy.ac.in": {
-    primary:   ["Research", "Documentation"],
-    secondary: ["Data Collection", "Reporting"],
-    special:   ["Technical Writing"]
+    primary:   ["Bio-Process Engineering", "Full-Stack Software Development"],
+    secondary: ["Molecular Biology and Genetic Engineering", "Agentic AI & LLM Optimization"],
+    special:   ["Report writing", "Research methodology"]
   },
-  "anafasadana.bt25@bitsathy.ac.in": {
-    primary:   ["Bioinformatics and data analytics", " Molecular biology"],
-    secondary: [" Bio process", " Microbial and plant"],
-    special:   [" Research methodology", "Business profile intelligence"]
+  "rubikas.ad25@bitsathy.ac.in": {
+    primary:   ["Cloud Computing", " Fullstack software development"],
+    secondary: [" Cyber security and Cryptography", " DevOps and IT Infra"],
+    special:   [" Generative AI(Gen AI)", "User Experince (UI/UX) Design"]
   },
   "akileshm25@bitsathy.ac.in": {
-    primary:   ["Machine Learning", "Python"],
-    secondary: ["Data Analysis", "R"],
-    special:   ["Predictive Modeling"]
+    primary:   ["Agentic AI & LLM Optimization", "Microbial and Plant Bioprospecting"],
+    secondary: ["Additive Manufacturing (3D Printing)", "Bioinformatics and Data Analytic"],
+    special:   [" Augmented Reality (AR) & Virtual Reality (VR) Development", "Research methodology"]
   },
   "shivashanthm.mz25@bitsathy.ac.in": {
     primary:   ["Mechatronics", "Arduino"],
