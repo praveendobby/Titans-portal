@@ -181,7 +181,7 @@ groupId: "A#100260",
 regNo: "7376252IT313",
 designation: "Member",
 department: "Information Technology",
-imgSrc: ""
+imgSrc: "img/roshini.jpeg"
 },
 
 {

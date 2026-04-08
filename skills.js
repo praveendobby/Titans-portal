@@ -63,15 +63,15 @@ const teamSkills = {
     secondary: ["React", "MongoDB"],
     special:   ["Full Stack Dev"]
   },
-  "member13.ad25@bitsathy.ac.in": {
-    primary:   ["Python", "AI"],
-    secondary: ["Data Science", "ML"],
-    special:   ["Deep Learning"]
+  "roshinim.it25@bitsathy.ac.in": {
+    primary:   ["Edge AI", "Agentic AI & LLM Optimization"],
+    secondary: ["Full-stack Software Development", "Cloud Computing"],
+    special:   [" Prompt Engineering",]
   },
   "member14.ad25@bitsathy.ac.in": {
-    primary:   ["Python", "Data Analysis"],
-    secondary: ["SQL", "Visualization"],
-    special:   ["Statistical Modeling"]
+    primary:   ["Edge AI", "Agentic AI & LLM Optimization"],
+    secondary: ["Full-stack Software Development", "Cloud Computing"],
+    special:   [" Prompt Engineering",]
   },
   "member15.ad25@bitsathy.ac.in": {
     primary:   ["Python", "NLP"],
