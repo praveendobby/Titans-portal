@@ -48,7 +48,7 @@ const teamSkills = {
     secondary: [" Cyber security and Cryptography", " DevOps and IT Infra"],
     special:   [" Generative AI(Gen AI)", "User Experince (UI/UX) Design"]
   },
-  "akileshm25@bitsathy.ac.in": {
+  "akileshm.btg25@bitsathy.ac.in": {
     primary:   ["Agentic AI & LLM Optimization", "Microbial and Plant Bioprospecting"],
     secondary: ["Additive Manufacturing (3D Printing)", "Bioinformatics and Data Analytic"],
     special:   [" Augmented Reality (AR) & Virtual Reality (VR) Development", "Research methodology"]
