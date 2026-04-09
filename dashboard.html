@@ -232,18 +232,29 @@
     </div>
   </section>
 
-  <!-- ═══ LEADERBOARD ═══ -->
-  <section id="sec-leaderboard" class="section">
-    <div class="mvp-banner" id="mvpBanner" style="display:none"></div>
-    <div class="card">
-      <div class="card-head">
-        <span class="card-title">🏆 Leaderboard</span>
-        <span class="badge-pill" style="background:rgba(245,158,11,0.15);color:#f59e0b">Sprint 14</span>
-      </div>
-      <div class="leaderboard-podium" id="podium"></div>
-      <div class="leaderboard-table" id="leaderboardList"></div>
+ <section id="sec-leaderboard" class="section">
+  
+  <div class="card">
+
+    <div class="card-head">
+      <span class="card-title">🏆 Leaderboard</span>
     </div>
-  </section>
+
+    <!-- 🔥 Tabs -->
+    <div class="lb-tabs">
+      <button class="lb-tab active" onclick="switchLeaderboard('activity', this)">🏆 Activity Points</button>
+      <button class="lb-tab" onclick="switchLeaderboard('tasks', this)">✅ Tasks</button>
+    </div>
+
+    <!-- Activity Leaderboard -->
+    <div id="lb-activity" class="lb-content active"></div>
+
+    <!-- Task Leaderboard -->
+    <div id="lb-tasks" class="lb-content" style="display:none"></div>
+
+  </div>
+
+</section>
 
   <!-- ═══ NOTICE BOARD ═══ -->
   <section id="sec-noticeboard" class="section">
