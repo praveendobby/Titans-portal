@@ -217,7 +217,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       fillSelect("memberSelect", false);
       fillSelect("filterMember", true);
       fillSelect("reassignSelect", false);
-      
     } else {
       const ttl = document.getElementById("taskListTitle");
       if (ttl) ttl.textContent = "My Tasks";
@@ -915,7 +914,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         <div class="lb-right"><div class="lb-score">${u.sc}</div><div class="lb-label">score</div></div>
       </div>`;
     }).join("");
-    if(window.TitansActivity) TitansActivity.renderLeaderboard("activityLeaderboard", teamUsers, user.name);
   }
 
   /* ══════════════════════════════════════════════════════
@@ -1245,9 +1243,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         <div class="task-meta">${statusChip(t)}${t.points?`<span class="pts-badge">⭐ ${t.points} pts</span>`:""}</div></div>
       </li>`).join("");
     }
-    if(window.TitansActivity) TitansActivity.renderProfile(user.name, "profileActivityPoints");
   }
-
 
   /* ══════════════════════════════════════════════════════
      BADGES + STREAK
