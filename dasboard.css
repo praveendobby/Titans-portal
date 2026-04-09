@@ -809,9 +809,14 @@ input[type="date"] { color-scheme: dark; }
 ══════════════════════════════════════ */
 .profile-wrap {
   display: grid;
-  grid-template-columns: 360px 1fr;
-  gap: 20px;
+  grid-template-columns: 420px 1fr;
+  gap: 24px;
   align-items: start;
+}
+.profile-right {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .profile-card { padding: 0 !important; overflow: hidden; }
@@ -901,6 +906,39 @@ input[type="date"] { color-scheme: dark; }
 .prof-bar-top  { display: flex; justify-content: space-between; font-size: 12px; color: var(--text2); margin-bottom: 8px; }
 .prof-bar-bg   { height: 8px; background: var(--bg3); border-radius: 99px; overflow: hidden; }
 .prof-bar-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--primary), #a78bfa); transition: width 1s ease; }
+/* 🔥 Activity Card Enhancement */
+.ap-card {
+  font-family: 'Syne', sans-serif;
+  background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(139,92,246,0.05));
+  border: 1px solid rgba(99,102,241,0.25);
+  border-radius: 18px;
+  padding: 20px;
+
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hover Lift */
+.ap-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(99,102,241,0.25);
+  border-color: rgba(139,92,246,0.5);
+}
+
+/* Glow Sweep */
+.ap-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent, rgba(139,92,246,0.3), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.ap-card:hover::before {
+  opacity: 1;
+}
 
 /* ══════════════════════════════════════
    MODALS
