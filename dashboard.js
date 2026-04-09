@@ -1183,68 +1183,120 @@ document.addEventListener("DOMContentLoaded", async () => {
     showToast("📊 Report generated!");
   };
 
-  /* ══════════════════════════════════════════════════════
-     PROFILE
-  ══════════════════════════════════════════════════════ */
-  function renderProfile() {
-    const ph=document.getElementById("profPhoto");
-    const idx=Math.max(0,mIdx(user.name));
-    if(ph){
-      const imgSrc=fixImgUrl(user.imgSrc);
-      if(imgSrc){
-        ph.innerHTML=`<img src="${imgSrc}" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;" onerror="this.remove();">`;
-        ph.className="prof-photo "+avCls(idx);
-      } else {
-        ph.className="prof-photo "+avCls(idx);
-        ph.textContent=ini(user.name);
-      }
-    }
+  
+function renderProfile() {
 
-    const set=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val||"";};
-    set("profileName", user.name);
-    set("profileDesig", user.designation);
-    set("pDept",  user.department);
-    set("pTeam",  user.team);
-    set("pGroup", user.groupId);
-    set("pReg",   user.regNo);
-    set("pRole",  user.designation);
-    set("pEmail", user.email);
+  const ph = document.getElementById("profPhoto");
+  const idx = Math.max(0, mIdx(user.name));
 
-    const s=memberStats(user.name),pct=s.total?Math.round(s.done/s.total*100):0;
-    const pts=getMemberPoints(user.name);
-    set("perfDone",    String(s.done));
-    set("perfPending", String(s.pending));
-    set("perfTotal",   String(s.total));
-    set("perfPct",     pct+"%");
-    set("totalPoints", String(pts));
-    const pBar=document.getElementById("perfBar"); if(pBar) pBar.style.width=pct+"%";
-
-    const sorted=[...teamUsers].sort((a,b)=>memberScore(b.name)-memberScore(a.name));
-    set("perfRank", "#"+(sorted.findIndex(u2=>u2.name===user.name)+1));
-
-    const badges=getBadges(user.name);
-    const bdgEl=document.getElementById("profileBadges");
-    if(bdgEl) bdgEl.innerHTML=badges.length?badges.map(b=>`<div class="badge-item">${b.icon} ${b.name}</div>`).join("")
-      :`<div style="font-size:12px;color:var(--text3)">No badges yet — complete tasks to earn!</div>`;
-
-    const streak=getStreak(user.name);
-    const strEl=document.getElementById("streakRow");
-    if(strEl) strEl.innerHTML=streak>0?`<div class="streak-fire">🔥</div><div class="streak-info"><div class="streak-num">${streak} day streak</div><div style="font-size:11px;color:var(--text3)">Keep it up!</div></div>`:"";
-
-    const mine=tasks.filter(t=>t.member===user.name).slice(-10).reverse();
-    const aL=document.getElementById("recentActivity"),aE=document.getElementById("recentEmpty");
-    const rC=document.getElementById("recentCount"); if(rC) rC.textContent=mine.length;
-    if(!mine.length){if(aL)aL.innerHTML="";if(aE)aE.style.display="";}
-    else{
-      if(aE) aE.style.display="none";
-      if(aL) aL.innerHTML=mine.map(t=>`<li>
-        <div class="task-check ${t.status==="reviewed"||t.done?"done":""}" style="cursor:default;opacity:0.6">${t.status==="reviewed"||t.done?"✓":""}</div>
-        <div class="task-body"><div class="task-name ${t.status==="reviewed"||t.done?"done":""}">${t.text}</div>
-        <div class="task-meta">${statusChip(t)}${t.points?`<span class="pts-badge">⭐ ${t.points} pts</span>`:""}</div></div>
-      </li>`).join("");
+  if (ph) {
+    const imgSrc = fixImgUrl(user.imgSrc);
+    if (imgSrc) {
+      ph.innerHTML = `<img src="${imgSrc}" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;" onerror="this.remove();">`;
+      ph.className = "prof-photo " + avCls(idx);
+    } else {
+      ph.className = "prof-photo " + avCls(idx);
+      ph.textContent = ini(user.name);
     }
   }
 
+  const set = (id, val) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = val || "";
+  };
+
+  set("profileName", user.name);
+  set("profileDesig", user.designation);
+  set("pDept", user.department);
+  set("pTeam", user.team);
+  set("pGroup", user.groupId);
+  set("pReg", user.regNo);
+  set("pRole", user.designation);
+  set("pEmail", user.email);
+
+  const s = memberStats(user.name);
+  const pct = s.total ? Math.round((s.done / s.total) * 100) : 0;
+
+  const pts = getMemberPoints(user.name);
+
+  set("perfDone", String(s.done));
+  set("perfPending", String(s.pending));
+  set("perfTotal", String(s.total));
+  set("perfPct", pct + "%");
+  set("totalPoints", String(pts));
+
+  const pBar = document.getElementById("perfBar");
+  if (pBar) pBar.style.width = pct + "%";
+
+  const sorted = [...teamUsers].sort((a, b) => memberScore(b.name) - memberScore(a.name));
+  set("perfRank", "#" + (sorted.findIndex(u2 => u2.name === user.name) + 1));
+
+  // Badges
+  const badges = getBadges(user.name);
+  const bdgEl = document.getElementById("profileBadges");
+
+  if (bdgEl) {
+    bdgEl.innerHTML = badges.length
+      ? badges.map(b => `<div class="badge-item">${b.icon} ${b.name}</div>`).join("")
+      : `<div style="font-size:12px;color:var(--text3)">No badges yet — complete tasks to earn!</div>`;
+  }
+
+  // Streak
+  const streak = getStreak(user.name);
+  const strEl = document.getElementById("streakRow");
+
+  if (strEl) {
+    strEl.innerHTML = streak > 0
+      ? `<div class="streak-fire">🔥</div>
+         <div class="streak-info">
+           <div class="streak-num">${streak} day streak</div>
+           <div style="font-size:11px;color:var(--text3)">Keep it up!</div>
+         </div>`
+      : "";
+  }
+
+  // Recent Activity
+  const mine = tasks.filter(t => t.member === user.name).slice(-10).reverse();
+  const aL = document.getElementById("recentActivity");
+  const aE = document.getElementById("recentEmpty");
+  const rC = document.getElementById("recentCount");
+
+  if (rC) rC.textContent = mine.length;
+
+  if (!mine.length) {
+    if (aL) aL.innerHTML = "";
+    if (aE) aE.style.display = "";
+  } else {
+    if (aE) aE.style.display = "none";
+    if (aL) {
+      aL.innerHTML = mine.map(t => `
+        <li>
+          <div class="task-check ${t.status === "reviewed" || t.done ? "done" : ""}" 
+               style="cursor:default;opacity:0.6">
+               ${t.status === "reviewed" || t.done ? "✓" : ""}
+          </div>
+
+          <div class="task-body">
+            <div class="task-name ${t.status === "reviewed" || t.done ? "done" : ""}">
+              ${t.text}
+            </div>
+
+            <div class="task-meta">
+              ${statusChip(t)}
+              ${t.points ? `<span class="pts-badge">⭐ ${t.points} pts</span>` : ""}
+            </div>
+          </div>
+        </li>
+      `).join("");
+    }
+  }
+
+  // 🔥 ACTIVITY POINTS CARD (FINAL FIX)
+  if (window.TitansActivity && user.name) {
+    TitansActivity.renderProfile(user.name, "profile-activity");
+  }
+
+}
   /* ══════════════════════════════════════════════════════
      BADGES + STREAK
   ══════════════════════════════════════════════════════ */
