@@ -28,7 +28,8 @@
       <span class="nav-icon">👥</span><span class="nav-label">Members</span>
     </li>
     <li onclick="showSection('leaderboard',this)" title="Leaderboard">
-      <span class="nav-icon">🏆</span><span class="nav-label">Board</span>
+      <span class="nav-icon">🏆</span><span class="nav-label">Board</span><div id="activityLeaderboard"></div>
+
     </li>
     <li onclick="showSection('noticeboard',this)" title="Notice Board">
       <span class="nav-icon">📰</span><span class="nav-label">Notice</span>
@@ -431,7 +432,7 @@
             </div>
           </div>
         </div>
-
+           <div id="profileActivityPoints"></div>
         <div class="card">
           <div class="card-head">
             <span class="card-title">Recent Activity</span>
@@ -543,6 +544,7 @@
 <script src="team-poll.js"></script>
 <script src="push-notifications.js"></script>
 <script src="titan-chat.js"></script>
+<script src="activity-points.js"></script>
 
 </body>
 </html>

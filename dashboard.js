@@ -217,6 +217,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       fillSelect("memberSelect", false);
       fillSelect("filterMember", true);
       fillSelect("reassignSelect", false);
+     
     } else {
       const ttl = document.getElementById("taskListTitle");
       if (ttl) ttl.textContent = "My Tasks";
@@ -914,6 +915,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         <div class="lb-right"><div class="lb-score">${u.sc}</div><div class="lb-label">score</div></div>
       </div>`;
     }).join("");
+    if(window.TitansActivity) TitansActivity.renderLeaderboard("activityLeaderboard", teamUsers, user.name);
   }
 
   /* ══════════════════════════════════════════════════════
@@ -1161,6 +1163,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const overdueEl=document.getElementById("overdueList"); if(!overdueEl) return;
     overdueEl.innerHTML=!overdue.length?`<div style="font-size:13px;color:#34d399;padding:8px">✅ No overdue tasks!</div>`
       :overdue.map(t=>`<div class="overdue-item"><div class="overdue-task">${t.text}</div><div class="overdue-meta">📌 ${t.member} · Due ${new Date(t.dueDate).toLocaleDateString("en-IN",{day:"numeric",month:"short"})}</div></div>`).join("");
+      if(window.TitansActivity && isCaptain) TitansActivity.renderUpdatePanel("activityUpdatePanel", teamUsers);
   }
 
   window.generateReport = () => {
@@ -1243,7 +1246,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         <div class="task-meta">${statusChip(t)}${t.points?`<span class="pts-badge">⭐ ${t.points} pts</span>`:""}</div></div>
       </li>`).join("");
     }
+    if(window.TitansActivity) TitansActivity.renderProfile(user.name, "profileActivityPoints");
   }
+
 
   /* ══════════════════════════════════════════════════════
      BADGES + STREAK
