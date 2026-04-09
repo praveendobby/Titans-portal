@@ -217,7 +217,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       fillSelect("memberSelect", false);
       fillSelect("filterMember", true);
       fillSelect("reassignSelect", false);
-     
+      
     } else {
       const ttl = document.getElementById("taskListTitle");
       if (ttl) ttl.textContent = "My Tasks";
@@ -878,13 +878,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     el.style.display="flex";
     el.innerHTML=`<span class="mvp-crown">👑</span><div class="mvp-info"><div class="mvp-label">🏆 WEEKLY MVP</div><div class="mvp-name">${mvp.u.name}</div><div class="mvp-sub">${mvp.st.done} tasks · ⭐ ${getMemberPoints(mvp.u.name)} pts · Score: ${mvp.sc}</div></div>`;
   }
-function renderLeaderboard() {
-  setTimeout(() => {
-    const firstTab = document.querySelector('.lb-tab');
-    switchLeaderboard('activity', firstTab);
-  }, 100);
 
-
+  function renderLeaderboard() {
     renderMvpBanner();
     const sorted=[...teamUsers].map(u=>({...u,sc:memberScore(u.name),st:memberStats(u.name),pts:getMemberPoints(u.name)})).sort((a,b)=>b.sc-a.sc);
     const maxSc=sorted[0]?.sc||1;
@@ -1168,7 +1163,6 @@ function renderLeaderboard() {
     const overdueEl=document.getElementById("overdueList"); if(!overdueEl) return;
     overdueEl.innerHTML=!overdue.length?`<div style="font-size:13px;color:#34d399;padding:8px">✅ No overdue tasks!</div>`
       :overdue.map(t=>`<div class="overdue-item"><div class="overdue-task">${t.text}</div><div class="overdue-meta">📌 ${t.member} · Due ${new Date(t.dueDate).toLocaleDateString("en-IN",{day:"numeric",month:"short"})}</div></div>`).join("");
-      if(window.TitansActivity && isCaptain) TitansActivity.renderUpdatePanel("activityUpdatePanel", teamUsers);
   }
 
   window.generateReport = () => {
@@ -1385,86 +1379,3 @@ function renderLeaderboard() {
   setupTopbar();
   startFirebase();
 });
-// 🔥 Switch Leaderboard Tabs (SAFE VERSION)
-window.switchLeaderboard = (type, el) => {
-
-  // remove active from all tabs
-  document.querySelectorAll('.lb-tab').forEach(b => b.classList.remove('active'));
-
-  // ✅ prevent crash if el is null
-  if (el) el.classList.add('active');
-
-  const activity = document.getElementById('lb-activity');
-  const tasks = document.getElementById('lb-tasks');
-
-  // ✅ prevent null errors
-  if (!activity || !tasks) return;
-
-  activity.style.display = 'none';
-  tasks.style.display = 'none';
-
-  if (type === 'activity') {
-    activity.style.display = 'block';
-
-    if (window.TitansActivity) {
-      TitansActivity.renderLeaderboard("lb-activity");
-    }
-
-  } else {
-    tasks.style.display = 'block';
-    renderTaskLeaderboard();
-  }
-};
-;function renderTaskLeaderboard() {
-  const container = document.getElementById("lb-tasks");
-  if (!container) return;
-
-  // ✅ DEFINE HERE
-  const scores = teamUsers.map(u => ({
-    name: u.name,
-    score: memberScore(u.name)
-  }));
-
-  scores.sort((a,b) => b.score - a.score);
-
-  // ✅ movement logic ALSO HERE
-  const prev = JSON.parse(localStorage.getItem("prevRanks") || "{}");
-  let newRanks = {};
-
-  scores.forEach((m,i)=>{
-    const old = prev[m.name];
-    const diff = old ? old - (i+1) : 0;
-    newRanks[m.name] = i+1;
-    m.movement = diff;
-  });
-
-  localStorage.setItem("prevRanks", JSON.stringify(newRanks));
-
-  const top3 = scores.slice(0,3);
-  const rest = scores.slice(3);
-
-  container.innerHTML = `
-    <div class="lb-podium">
-      ${top3.map((m,i)=>`
-        <div class="podium-card rank-${i+1}">
-          <div class="podium-rank">#${i+1}</div>
-          <div class="podium-name">${m.name}</div>
-          <div class="podium-score">${m.score}</div>
-        </div>
-      `).join("")}
-    </div>
-
-    <div class="ap-lb-section">
-      ${rest.map((m,i)=>`
-        <div class="ap-lb-row">
-          <div class="ap-lb-rank">${i + top3.length + 1}</div>
-          <div class="ap-lb-name">${m.name}</div>
-          <div class="ap-lb-pts">
-            ${m.score}
-            ${m.movement > 0 ? " ↑"+m.movement : m.movement < 0 ? " ↓"+Math.abs(m.movement) : ""}
-          </div>
-        </div>
-      `).join("")}
-    </div>
-  `;
-}

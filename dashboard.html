@@ -28,8 +28,7 @@
       <span class="nav-icon">👥</span><span class="nav-label">Members</span>
     </li>
     <li onclick="showSection('leaderboard',this)" title="Leaderboard">
-      <span class="nav-icon">🏆</span><span class="nav-label">Board</span><div id="activityLeaderboard"></div>
-
+      <span class="nav-icon">🏆</span><span class="nav-label">Board</span>
     </li>
     <li onclick="showSection('noticeboard',this)" title="Notice Board">
       <span class="nav-icon">📰</span><span class="nav-label">Notice</span>
@@ -232,29 +231,18 @@
     </div>
   </section>
 
- <section id="sec-leaderboard" class="section">
-  
-  <div class="card">
-
-    <div class="card-head">
-      <span class="card-title">🏆 Leaderboard</span>
+  <!-- ═══ LEADERBOARD ═══ -->
+  <section id="sec-leaderboard" class="section">
+    <div class="mvp-banner" id="mvpBanner" style="display:none"></div>
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">🏆 Leaderboard</span>
+        <span class="badge-pill" style="background:rgba(245,158,11,0.15);color:#f59e0b">Sprint 14</span>
+      </div>
+      <div class="leaderboard-podium" id="podium"></div>
+      <div class="leaderboard-table" id="leaderboardList"></div>
     </div>
-
-    <!-- 🔥 Tabs -->
-    <div class="lb-tabs">
-      <button class="lb-tab active" onclick="switchLeaderboard('activity', this)">🏆 Activity Points</button>
-      <button class="lb-tab" onclick="switchLeaderboard('tasks', this)">✅ Tasks</button>
-    </div>
-
-    <!-- Activity Leaderboard -->
-    <div id="lb-activity" class="lb-content active"></div>
-
-    <!-- Task Leaderboard -->
-    <div id="lb-tasks" class="lb-content" style="display:none"></div>
-
-  </div>
-
-</section>
+  </section>
 
   <!-- ═══ NOTICE BOARD ═══ -->
   <section id="sec-noticeboard" class="section">
@@ -443,7 +431,7 @@
             </div>
           </div>
         </div>
-           <div id="profileActivityPoints"></div>
+
         <div class="card">
           <div class="card-head">
             <span class="card-title">Recent Activity</span>
@@ -555,7 +543,6 @@
 <script src="team-poll.js"></script>
 <script src="push-notifications.js"></script>
 <script src="titan-chat.js"></script>
-<script src="activity-points.js"></script>
 
 </body>
 </html>
