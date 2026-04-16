@@ -1,205 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TITANS Portal — Dashboard</title>
   <link rel="icon" type="image/png" href="img/titans-icon.png" />
   <link rel="stylesheet" href="dasboard.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="titan-chat.css" />
-  <style>
-    /* ══ THEME VARIABLES ══ */
-    [data-theme="dark"] {
-      --bg:#040913; --bg2:#0a1020; --bg3:#111827;
-      --card:#111827; --border:rgba(255,255,255,0.07);
-      --text:#e8edf5; --text2:#94a3b8; --text3:#475569;
-      --primary:#8b5cf6; --red:#f87171;
-      --shadow:0 4px 24px rgba(0,0,0,0.4);
-    }
-    [data-theme="light"] {
-      --bg:#f1f5f9; --bg2:#e2e8f0; --bg3:#f8fafc;
-      --card:#ffffff; --border:rgba(0,0,0,0.08);
-      --text:#0f172a; --text2:#475569; --text3:#94a3b8;
-      --primary:#7c3aed; --red:#ef4444;
-      --shadow:0 4px 24px rgba(0,0,0,0.08);
-    }
-    [data-theme="light"] .sidebar { background:#1e1b4b !important; }
-    [data-theme="light"] .topbar { background:#fff !important; border-bottom:1px solid var(--border); }
-    [data-theme="light"] .card { background:var(--card); }
-    [data-theme="light"] .main { background:var(--bg); }
-
-    /* ══ THEME TOGGLE ══ */
-    .theme-toggle {
-      background:rgba(255,255,255,0.08); border:1px solid var(--border);
-      border-radius:20px; padding:5px 12px; cursor:pointer;
-      font-size:12px; color:var(--text2);
-      display:flex; align-items:center; gap:5px;
-      transition:all 0.2s; font-family:inherit;
-    }
-    .theme-toggle:hover { background:rgba(139,92,246,0.15); color:var(--primary); }
-    [data-theme="light"] .theme-toggle { background:rgba(0,0,0,0.05); }
-
-    /* ══ LEADERBOARD TABS ══ */
-    .lb-tabs {
-      display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap;
-    }
-    .lb-tab {
-      padding:8px 20px; border-radius:20px; font-size:12.5px;
-      font-weight:600; cursor:pointer; border:1px solid var(--border);
-      background:var(--bg2); color:var(--text2);
-      transition:all 0.2s; font-family:inherit;
-    }
-    .lb-tab.active {
-      background:linear-gradient(135deg,#7c3aed,#a78bfa);
-      border-color:transparent; color:#fff;
-      box-shadow:0 4px 12px rgba(124,58,237,0.3);
-    }
-    .lb-tab-content { display:none; }
-    .lb-tab-content.active { display:block; animation:lbFadeIn 0.2s ease; }
-    @keyframes lbFadeIn { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:translateY(0)} }
-
-    /* ══ PROFILE GRID ══ */
-    .profile-grid {
-      display:grid;
-      grid-template-columns:300px 1fr;
-      gap:20px; align-items:start;
-    }
-    .profile-right-col { display:flex; flex-direction:column; gap:20px; }
-
-    /* ══ ACTIVITY POINTS — matches portal style ══ */
-    .ap-card {
-      background:var(--card); border:1px solid var(--border);
-      border-radius:16px; padding:20px; box-shadow:var(--shadow);
-    }
-    .ap-card-head {
-      display:flex; align-items:center; justify-content:space-between;
-      margin-bottom:14px; padding-bottom:12px; border-bottom:1px solid var(--border);
-    }
-    .ap-card-title {
-      font-family:'Syne',sans-serif; font-weight:800;
-      font-size:14px; color:var(--text);
-      display:flex; align-items:center; gap:8px;
-    }
-    .ap-portal-tag {
-      font-size:10px; padding:2px 8px; border-radius:20px;
-      background:rgba(99,102,241,0.12); border:1px solid rgba(99,102,241,0.25);
-      color:#818cf8; font-weight:600;
-    }
-    .ap-total-wrap { text-align:center; padding:10px 0 14px; }
-    .ap-total-num {
-      font-family:'Syne',sans-serif; font-size:44px; font-weight:800;
-      background:linear-gradient(135deg,#818cf8,#a78bfa);
-      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-      line-height:1;
-    }
-    .ap-total-sub { font-size:11px; color:var(--text3); margin-top:4px; letter-spacing:1px; }
-    .ap-cats { display:flex; flex-direction:column; gap:8px; }
-    .ap-cat-item {
-      display:flex; align-items:center; justify-content:space-between;
-      padding:10px 14px; background:var(--bg2); border-radius:10px;
-      border:1px solid var(--border); transition:border-color 0.2s;
-    }
-    .ap-cat-item:hover { border-color:rgba(99,102,241,0.3); }
-    .ap-cat-left { display:flex; align-items:center; gap:10px; }
-    .ap-cat-icon { font-size:16px; }
-    .ap-cat-name { font-size:12.5px; color:var(--text2); font-weight:500; }
-    .ap-cat-val { font-size:14px; font-weight:700; color:#818cf8; }
-    .ap-footer {
-      font-size:10px; color:var(--text3); text-align:center;
-      margin-top:12px; padding-top:10px; border-top:1px solid var(--border);
-    }
-
-    /* ══ ACTIVITY LEADERBOARD ROWS ══ */
-    .ap-lb-section { padding:4px 0; }
-    .ap-lb-title {
-      font-family:'Syne',sans-serif; font-weight:800;
-      font-size:14px; color:var(--text); margin-bottom:14px;
-      display:flex; align-items:center; gap:8px;
-    }
-    .ap-lb-row {
-      display:flex; align-items:center; gap:12px;
-      padding:11px 8px; border-bottom:1px solid var(--border);
-      border-radius:8px; transition:background 0.15s;
-    }
-    .ap-lb-row:hover { background:var(--bg2); }
-    .ap-lb-row.me { background:rgba(99,102,241,0.06); }
-    .ap-lb-rank { width:30px; text-align:center; font-size:14px; font-weight:700; flex-shrink:0; }
-    .ap-lb-r1 { color:#fbbf24; } .ap-lb-r2 { color:#94a3b8; }
-    .ap-lb-r3 { color:#f97316; } .ap-lb-rn { color:var(--text3); font-size:12px; }
-    .ap-lb-info { flex:1; }
-    .ap-lb-name { font-size:13px; font-weight:600; color:var(--text); }
-    .ap-lb-sub { font-size:11px; color:var(--text3); margin-top:2px; }
-    .ap-lb-bar-bg { width:80px; height:5px; background:var(--bg2); border-radius:3px; overflow:hidden; }
-    .ap-lb-bar-fill { height:100%; border-radius:3px; background:linear-gradient(90deg,#6366f1,#a78bfa); transition:width 0.8s ease; }
-    .ap-lb-pts { font-size:14px; font-weight:700; color:#818cf8; min-width:55px; text-align:right; }
-
-    /* ══ CAPTAIN UPDATE PANEL ══ */
-    .ap-update-card {
-      background:var(--card); border:1px solid rgba(99,102,241,0.2);
-      border-radius:16px; padding:20px; margin-bottom:20px;
-    }
-    .ap-update-title {
-      font-family:'Syne',sans-serif; font-weight:800;
-      font-size:14px; color:var(--text); margin-bottom:14px;
-      display:flex; align-items:center; gap:8px;
-    }
-    .ap-input {
-      width:100%; background:var(--bg2); border:1px solid var(--border);
-      border-radius:8px; padding:9px 12px; font-size:13px;
-      color:var(--text); outline:none; font-family:inherit;
-      transition:border-color 0.2s; box-sizing:border-box;
-    }
-    .ap-input:focus { border-color:rgba(99,102,241,0.5); }
-    .ap-select {
-      width:100%; background:var(--bg2); border:1px solid var(--border);
-      border-radius:8px; padding:9px 12px; font-size:13px;
-      color:var(--text); outline:none; font-family:inherit; margin-bottom:10px;
-    }
-    .ap-input-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-bottom:10px; }
-    .ap-input-col { display:flex; flex-direction:column; gap:4px; }
-    .ap-input-label { font-size:11px; color:var(--text3); font-weight:500; }
-    .ap-save-btn {
-      width:100%; padding:11px; border-radius:10px; border:none;
-      background:linear-gradient(135deg,#6366f1,#a78bfa); color:#fff;
-      font-family:'Syne',sans-serif; font-weight:700; font-size:13px;
-      cursor:pointer; transition:all 0.2s; margin-top:10px;
-      box-shadow:0 4px 16px rgba(99,102,241,0.3);
-    }
-    .ap-save-btn:hover { transform:scale(1.02); }
-
-    /* ══ SUMMARY LIST ══ */
-    .ap-summary-row {
-      display:flex; align-items:center; gap:12px;
-      padding:10px 0; border-bottom:1px solid var(--border);
-    }
-    .ap-summary-medal { font-size:13px; font-weight:700; color:#818cf8; width:28px; }
-    .ap-summary-info { flex:1; }
-    .ap-summary-name { font-size:13px; font-weight:600; color:var(--text); margin-bottom:4px; }
-    .ap-summary-bar { height:5px; background:var(--bg2); border-radius:3px; overflow:hidden; }
-    .ap-summary-fill { height:100%; border-radius:3px; background:linear-gradient(90deg,#6366f1,#a78bfa); transition:width 0.6s ease; }
-    .ap-summary-pts { font-size:14px; font-weight:700; color:#a78bfa; }
-    .ap-summary-pts-lbl { font-size:10px; color:var(--text3); }
-
-    /* ══ VOICE NOTES FIX ══ */
-    .vn-task-btn {
-      background:rgba(139,92,246,0.1); border:1px solid rgba(139,92,246,0.25);
-      color:var(--primary); border-radius:8px; padding:5px 9px;
-      cursor:pointer; font-size:13px; transition:all 0.15s;
-      display:inline-flex; align-items:center; gap:4px;
-    }
-    .vn-task-btn:hover { background:rgba(139,92,246,0.2); }
-    .vn-count {
-      font-size:10px; background:var(--primary); color:#fff;
-      border-radius:10px; padding:1px 5px; font-weight:700;
-    }
-
-    /* ══ RESPONSIVE ══ */
-    @media (max-width:900px) {
-      .profile-grid { grid-template-columns:1fr; }
-      .ap-input-grid { grid-template-columns:1fr 1fr; }
-    }
-  </style>
 </head>
 <body>
 
@@ -210,21 +18,40 @@
     <span class="brand-txt">TITANS</span>
   </div>
   <ul>
-    <li class="active" onclick="showSection('home',this)"><span class="nav-icon">⊞</span><span class="nav-label">Home</span></li>
-    <li onclick="showSection('tasks',this)"><span class="nav-icon">✓</span><span class="nav-label">Tasks</span></li>
-    <li onclick="showSection('members',this)"><span class="nav-icon">👥</span><span class="nav-label">Members</span></li>
-    <li onclick="showSection('leaderboard',this)"><span class="nav-icon">🏆</span><span class="nav-label">Board</span></li>
-    <li onclick="showSection('noticeboard',this)"><span class="nav-icon">📰</span><span class="nav-label">Notice</span></li>
-    <li onclick="showSection('meetings',this)"><span class="nav-icon">📅</span><span class="nav-label">Meetings</span></li>
-    <li onclick="showSection('polls',this)"><span class="nav-icon">🗳️</span><span class="nav-label">Polls</span></li>
-    <li onclick="showSection('analytics',this)" id="analyticsNav" style="display:none"><span class="nav-icon">📊</span><span class="nav-label">Analytics</span></li>
-    <li onclick="showSection('profile',this)"><span class="nav-icon">◉</span><span class="nav-label">Profile</span></li>
+    <li class="active" onclick="showSection('home',this)" title="Home">
+      <span class="nav-icon">⊞</span><span class="nav-label">Home</span>
+    </li>
+    <li onclick="showSection('tasks',this)" title="Tasks">
+      <span class="nav-icon">✓</span><span class="nav-label">Tasks</span>
+    </li>
+    <li onclick="showSection('members',this)" title="Members">
+      <span class="nav-icon">👥</span><span class="nav-label">Members</span>
+    </li>
+    <li onclick="showSection('leaderboard',this)" title="Leaderboard">
+      <span class="nav-icon">🏆</span><span class="nav-label">Board</span>
+    </li>
+    <li onclick="showSection('noticeboard',this)" title="Notice Board">
+      <span class="nav-icon">📰</span><span class="nav-label">Notice</span>
+    </li>
+    <li onclick="showSection('meetings',this)" title="Meetings">
+      <span class="nav-icon">📅</span><span class="nav-label">Meetings</span>
+    </li>
+    <li onclick="showSection('polls',this)" title="Team Polls">
+      <span class="nav-icon">🗳️</span><span class="nav-label">Polls</span>
+    </li>
+    <li onclick="showSection('analytics',this)" id="analyticsNav" style="display:none" title="Analytics">
+      <span class="nav-icon">📊</span><span class="nav-label">Analytics</span>
+    </li>
+    <li onclick="showSection('profile',this)" title="My Profile">
+      <span class="nav-icon">◉</span><span class="nav-label">Profile</span>
+    </li>
   </ul>
-  <div class="sidebar-logout" onclick="logout()">⏻</div>
+  <div class="sidebar-logout" onclick="logout()" title="Logout">⏻</div>
 </div>
 
 <!-- MAIN -->
 <div class="main">
+
   <!-- TOPBAR -->
   <div class="topbar">
     <div class="topbar-left">
@@ -233,9 +60,6 @@
     </div>
     <div class="topbar-right">
       <div class="sync-badge" id="syncBadge"></div>
-      <button class="theme-toggle" onclick="toggleTheme()">
-        <span id="themeIcon">☀️</span><span id="themeLabel">Light</span>
-      </button>
       <select class="status-sel" id="myStatusSel" onchange="updateMyStatus(this.value)">
         <option value="online">🟢 Online</option>
         <option value="busy">🔴 Busy</option>
@@ -243,7 +67,9 @@
       </select>
       <div class="topbar-sprint">Sprint 14 · Q1 2026</div>
       <div class="notif-wrap">
-        <div class="notif-btn" id="notifBtn" onclick="toggleNotif()">🔔<div class="notif-dot" id="notifDot"></div></div>
+        <div class="notif-btn" id="notifBtn" onclick="toggleNotif()">
+          🔔<div class="notif-dot" id="notifDot"></div>
+        </div>
         <div class="notif-panel" id="notifPanel">
           <div class="notif-header">Notifications <span class="notif-clear" onclick="clearNotifs()">Clear all</span></div>
           <div class="notif-list" id="notifList"><div class="notif-empty">No notifications yet</div></div>
@@ -256,10 +82,11 @@
     </div>
   </div>
 
-  <!-- HOME -->
+  <!-- ═══ HOME ═══ -->
   <section id="sec-home" class="section active">
     <div id="announcementBanner" style="display:none" class="announcement-banner">
-      <span class="ann-icon">📢</span><span id="annText"></span>
+      <span class="ann-icon">📢</span>
+      <span id="annText"></span>
       <span onclick="dismissAnnouncement()" style="cursor:pointer;margin-left:auto;opacity:0.6">✕</span>
     </div>
     <div class="countdown-card">
@@ -268,10 +95,22 @@
       <div class="cd-bar-bg"><div class="cd-bar-fill" id="cdBarFill"></div></div>
     </div>
     <div class="stat-grid">
-      <div class="stat-card" style="--accent:#8b5cf6"><div class="stat-icon">👥</div><div class="stat-info"><div class="stat-label">Total Members</div><div class="stat-val">15</div></div></div>
-      <div class="stat-card" style="--accent:#10b981"><div class="stat-icon">✅</div><div class="stat-info"><div class="stat-label">Tasks Done</div><div class="stat-val" id="statDone">0</div></div></div>
-      <div class="stat-card" style="--accent:#f59e0b"><div class="stat-icon">⏳</div><div class="stat-info"><div class="stat-label">In Progress</div><div class="stat-val" id="statPending">0</div></div></div>
-      <div class="stat-card" style="--accent:#ef4444"><div class="stat-icon">📋</div><div class="stat-info"><div class="stat-label">My Tasks</div><div class="stat-val" id="statTotal">0</div></div></div>
+      <div class="stat-card" style="--accent:#8b5cf6">
+        <div class="stat-icon">👥</div>
+        <div class="stat-info"><div class="stat-label">Total Members</div><div class="stat-val">15</div></div>
+      </div>
+      <div class="stat-card" style="--accent:#10b981">
+        <div class="stat-icon">✅</div>
+        <div class="stat-info"><div class="stat-label">Tasks Done</div><div class="stat-val" id="statDone">0</div></div>
+      </div>
+      <div class="stat-card" style="--accent:#f59e0b">
+        <div class="stat-icon">⏳</div>
+        <div class="stat-info"><div class="stat-label">In Progress</div><div class="stat-val" id="statPending">0</div></div>
+      </div>
+      <div class="stat-card" style="--accent:#ef4444">
+        <div class="stat-icon">📋</div>
+        <div class="stat-info"><div class="stat-label">My Tasks</div><div class="stat-val" id="statTotal">0</div></div>
+      </div>
     </div>
     <div class="grid-2">
       <div class="card">
@@ -289,25 +128,46 @@
       </div>
     </div>
     <div class="grid-2">
-      <div class="card"><div class="card-head"><span class="card-title">📅 Upcoming Meetings</span></div><div id="homeUpcomingMeetings"></div></div>
-      <div class="card"><div class="card-head"><span class="card-title">📰 Latest News</span></div><div id="homeLatestNews"></div></div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">📅 Upcoming Meetings</span></div>
+        <div id="homeUpcomingMeetings"></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">📰 Latest News</span></div>
+        <div id="homeLatestNews"></div>
+      </div>
     </div>
     <div class="grid-2">
-      <div class="card"><div class="card-head"><span class="card-title">📋 Daily Standup</span><span id="standupDate" style="font-size:11px;color:var(--text3)"></span></div><div id="standupSection"></div></div>
-      <div class="card"><div class="card-head"><span class="card-title">🔥 Activity Heatmap</span><span style="font-size:11px;color:var(--text3)">Last 5 weeks</span></div><div id="heatmap"></div></div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">📋 Daily Standup</span><span id="standupDate" style="font-size:11px;color:var(--text3)"></span></div>
+        <div id="standupSection"></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">🔥 Activity Heatmap</span><span style="font-size:11px;color:var(--text3)">Last 5 weeks</span></div>
+        <div id="heatmap"></div>
+      </div>
     </div>
   </section>
 
-  <!-- TASKS -->
+  <!-- ═══ TASKS ═══ -->
   <section id="sec-tasks" class="section">
     <div id="captainTools" style="display:none">
       <div class="card" style="margin-bottom:20px">
         <div class="card-head"><span class="card-title">📢 Post Announcement</span><span class="badge-pill captain-badge">Captain Access</span></div>
-        <div class="ann-form"><input id="annInput" placeholder="e.g. Meeting at 3pm today…"/><button class="btn-primary" onclick="postAnnouncement()">📢 Post</button></div>
+        <div class="ann-form">
+          <input id="annInput" placeholder="e.g. Meeting at 3pm today, focus on API integration…"/>
+          <button class="btn-primary" onclick="postAnnouncement()">📢 Post</button>
+        </div>
       </div>
       <div class="card" style="margin-bottom:20px">
-        <div class="card-head"><span class="card-title">🤖 AI Task Suggester</span><span class="badge-pill" style="background:rgba(99,102,241,0.15);color:#818cf8">Powered by Claude</span></div>
-        <div class="ai-form"><input id="aiGoalInput" placeholder="e.g. Build login system…"/><button class="btn-ai" onclick="suggestTasks()">✨ Suggest Tasks</button></div>
+        <div class="card-head">
+          <span class="card-title">🤖 AI Task Suggester</span>
+          <span class="badge-pill" style="background:rgba(99,102,241,0.15);color:#818cf8">Powered by Claude</span>
+        </div>
+        <div class="ai-form">
+          <input id="aiGoalInput" placeholder="e.g. Build login system, Create mobile UI…"/>
+          <button class="btn-ai" onclick="suggestTasks()">✨ Suggest Tasks</button>
+        </div>
         <div id="aiResults" style="margin-top:14px"></div>
       </div>
       <div class="card" id="assignCard" style="margin-bottom:20px">
@@ -316,8 +176,10 @@
           <input id="taskInput" placeholder="Task description…"/>
           <select id="memberSelect"></select>
           <select id="prioritySelect">
-            <option value="normal">📌 Normal</option><option value="high">🔴 High</option>
-            <option value="medium">🟡 Medium</option><option value="low">🟢 Low</option>
+            <option value="normal">📌 Normal</option>
+            <option value="high">🔴 High</option>
+            <option value="medium">🟡 Medium</option>
+            <option value="low">🟢 Low</option>
           </select>
           <input type="date" id="dueDateInput"/>
           <input id="fileLinkInput" placeholder="🔗 File/Drive link (optional)"/>
@@ -326,8 +188,13 @@
         <div id="wa-btn-wrap" style="display:none;margin-top:12px"></div>
       </div>
       <div class="card" id="reviewCard" style="margin-bottom:20px">
-        <div class="card-head"><span class="card-title">🔍 Pending Reviews</span><span class="badge-pill" id="reviewCount" style="background:rgba(239,68,68,0.15);color:#f87171">0</span></div>
-        <div id="reviewList"><div class="empty-state"><span>✅</span><p>No submissions to review</p></div></div>
+        <div class="card-head">
+          <span class="card-title">🔍 Pending Reviews</span>
+          <span class="badge-pill" id="reviewCount" style="background:rgba(239,68,68,0.15);color:#f87171">0</span>
+        </div>
+        <div id="reviewList">
+          <div class="empty-state"><span>✅</span><p>No submissions to review</p></div>
+        </div>
       </div>
     </div>
     <div class="card">
@@ -336,12 +203,18 @@
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <select id="filterMember" class="filter-select" onchange="renderTasks()"><option value="all">All Members</option></select>
           <select id="filterStatus" class="filter-select" onchange="renderTasks()">
-            <option value="all">All Status</option><option value="pending">Pending</option>
-            <option value="submitted">Submitted</option><option value="reviewed">Reviewed</option><option value="done">Done</option>
+            <option value="all">All Status</option>
+            <option value="pending">Pending</option>
+            <option value="submitted">Submitted</option>
+            <option value="reviewed">Reviewed</option>
+            <option value="done">Done</option>
           </select>
           <select id="filterPriority" class="filter-select" onchange="renderTasks()">
-            <option value="all">All Priority</option><option value="high">🔴 High</option>
-            <option value="medium">🟡 Medium</option><option value="normal">📌 Normal</option><option value="low">🟢 Low</option>
+            <option value="all">All Priority</option>
+            <option value="high">🔴 High</option>
+            <option value="medium">🟡 Medium</option>
+            <option value="normal">📌 Normal</option>
+            <option value="low">🟢 Low</option>
           </select>
         </div>
       </div>
@@ -350,7 +223,7 @@
     </div>
   </section>
 
-  <!-- MEMBERS -->
+  <!-- ═══ MEMBERS ═══ -->
   <section id="sec-members" class="section">
     <div class="card">
       <div class="card-head"><span class="card-title">Team Members</span><span class="badge-pill">15 members</span></div>
@@ -358,7 +231,7 @@
     </div>
   </section>
 
-  <!-- LEADERBOARD -->
+  <!-- ═══ LEADERBOARD ═══ -->
   <section id="sec-leaderboard" class="section">
     <div class="mvp-banner" id="mvpBanner" style="display:none"></div>
     <div class="card">
@@ -366,33 +239,23 @@
         <span class="card-title">🏆 Leaderboard</span>
         <span class="badge-pill" style="background:rgba(245,158,11,0.15);color:#f59e0b">Sprint 14</span>
       </div>
-      <!-- Tabs -->
-      <div class="lb-tabs">
-        <button class="lb-tab active" onclick="switchLbTab('tasks',this)">📋 Task Score</button>
-        <button class="lb-tab" onclick="switchLbTab('activity',this)">⚡ Activity Points</button>
-      </div>
-      <!-- Task Tab -->
-      <div class="lb-tab-content active" id="lb-tab-tasks">
-        <div class="leaderboard-podium" id="podium"></div>
-        <div class="leaderboard-table" id="leaderboardList"></div>
-      </div>
-      <!-- Activity Tab -->
-      <div class="lb-tab-content" id="lb-tab-activity">
-        <div id="activityLeaderboard"></div>
-      </div>
+      <div class="leaderboard-podium" id="podium"></div>
+      <div class="leaderboard-table" id="leaderboardList"></div>
     </div>
   </section>
 
-  <!-- NOTICE BOARD -->
+  <!-- ═══ NOTICE BOARD ═══ -->
   <section id="sec-noticeboard" class="section">
     <div class="card" id="newsPostCard" style="display:none;margin-bottom:20px">
       <div class="card-head"><span class="card-title">📰 Post News / Update</span><span class="badge-pill captain-badge">Captain Access</span></div>
       <div class="news-post-form">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
-          <input id="newsTitleInput" placeholder="Title…"/>
+          <input id="newsTitleInput" placeholder="Title e.g. Today's Update, Venue Change…"/>
           <select id="newsCategory">
-            <option value="news">📰 News</option><option value="venue">📍 Venue Update</option>
-            <option value="schedule">🗓 Schedule</option><option value="important">🚨 Important</option>
+            <option value="news">📰 News</option>
+            <option value="venue">📍 Venue Update</option>
+            <option value="schedule">🗓 Schedule</option>
+            <option value="important">🚨 Important</option>
             <option value="achievement">🏅 Achievement</option>
           </select>
         </div>
@@ -406,19 +269,22 @@
     <div id="newsFeed"></div>
   </section>
 
-  <!-- MEETINGS -->
+  <!-- ═══ MEETINGS ═══ -->
   <section id="sec-meetings" class="section">
     <div class="card" id="meetingPostCard" style="display:none;margin-bottom:20px">
       <div class="card-head"><span class="card-title">📅 Schedule Meeting</span><span class="badge-pill captain-badge">Captain Access</span></div>
       <div class="meeting-form">
-        <input id="meetingTitle" placeholder="Meeting title…"/>
+        <input id="meetingTitle" placeholder="Meeting title e.g. Sprint Review, Daily Standup…"/>
         <input type="date" id="meetingDate"/>
         <input type="time" id="meetingTime"/>
-        <input id="meetingVenue" placeholder="Venue e.g. Lab 3, Room 201…"/>
+        <input id="meetingVenue" placeholder="Venue e.g. Lab 3, Google Meet, Room 201…"/>
         <input id="meetingLink" placeholder="🔗 Meeting link (optional)"/>
         <select id="meetingType">
-          <option value="standup">☀ Daily Standup</option><option value="sprint">🏃 Sprint Review</option>
-          <option value="planning">📋 Planning</option><option value="demo">🎯 Demo</option><option value="other">📅 Other</option>
+          <option value="standup">☀ Daily Standup</option>
+          <option value="sprint">🏃 Sprint Review</option>
+          <option value="planning">📋 Planning</option>
+          <option value="demo">🎯 Demo</option>
+          <option value="other">📅 Other</option>
         </select>
         <button class="btn-primary" onclick="scheduleMeeting()">📅 Schedule</button>
       </div>
@@ -426,57 +292,83 @@
     <div class="card">
       <div class="card-head">
         <span class="card-title">📅 All Meetings</span>
-        <select class="filter-select" id="meetingFilter" onchange="renderMeetings()">
-          <option value="upcoming">Upcoming</option><option value="all">All</option><option value="past">Past</option>
-        </select>
+        <div style="display:flex;gap:8px">
+          <select class="filter-select" id="meetingFilter" onchange="renderMeetings()">
+            <option value="upcoming">Upcoming</option>
+            <option value="all">All</option>
+            <option value="past">Past</option>
+          </select>
+        </div>
       </div>
       <div id="meetingsList"></div>
     </div>
   </section>
 
-  <!-- POLLS -->
+  <!-- ═══ POLLS ═══ -->
   <section id="sec-polls" class="section">
     <div id="pollContainer"></div>
   </section>
 
-  <!-- ANALYTICS -->
+  <!-- ═══ ANALYTICS (Captain Only) ═══ -->
   <section id="sec-analytics" class="section">
     <div class="grid-2" style="margin-bottom:20px">
-      <div class="card"><div class="card-head"><span class="card-title">📊 Task Distribution</span></div><div id="taskDistChart"></div></div>
-      <div class="card"><div class="card-head"><span class="card-title">⚡ Overdue Alerts</span></div><div id="overdueList"></div></div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">📊 Task Distribution</span></div>
+        <div id="taskDistChart"></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">⚡ Overdue Alerts</span></div>
+        <div id="overdueList"></div>
+      </div>
     </div>
-    <div class="card" style="margin-bottom:20px">
+    <div class="card">
       <div class="card-head">
         <span class="card-title">📈 Team Performance Report</span>
         <button class="btn-primary" style="padding:7px 14px;font-size:12px" onclick="generateReport()">Generate Report</button>
       </div>
       <div id="reportContent"></div>
     </div>
-    <div id="activityUpdatePanel"></div>
   </section>
 
-  <!-- PROFILE -->
+  <!-- ═══ PROFILE ═══ -->
   <section id="sec-profile" class="section">
-    <div class="profile-grid">
-
-      <!-- LEFT — Profile Card -->
+    <div class="profile-wrap">
       <div class="card profile-card">
-        <div class="prof-banner"><div class="prof-banner-text">TITANS</div></div>
-        <div class="prof-photo-ring"><div class="prof-photo" id="profPhoto"></div></div>
+        <div class="prof-banner">
+          <div class="prof-banner-text">TITANS</div>
+        </div>
+        <div class="prof-photo-ring">
+          <div class="prof-photo" id="profPhoto"></div>
+        </div>
         <div class="prof-body">
           <div class="prof-name" id="profileName"></div>
           <div class="prof-desig" id="profileDesig"></div>
           <div id="profileBadges" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:16px"></div>
           <div class="streak-row" id="streakRow"></div>
           <div class="prof-stats-row">
-            <div class="prof-mini-stat"><div class="prof-mini-num green" id="perfDone">0</div><div class="prof-mini-label">Done</div></div>
-            <div class="prof-mini-stat"><div class="prof-mini-num amber" id="perfPending">0</div><div class="prof-mini-label">Pending</div></div>
-            <div class="prof-mini-stat"><div class="prof-mini-num" id="perfTotal">0</div><div class="prof-mini-label">Total</div></div>
-            <div class="prof-mini-stat"><div class="prof-mini-num gold" id="perfRank">#—</div><div class="prof-mini-label">Rank</div></div>
+            <div class="prof-mini-stat">
+              <div class="prof-mini-num green" id="perfDone">0</div>
+              <div class="prof-mini-label">Done</div>
+            </div>
+            <div class="prof-mini-stat">
+              <div class="prof-mini-num amber" id="perfPending">0</div>
+              <div class="prof-mini-label">Pending</div>
+            </div>
+            <div class="prof-mini-stat">
+              <div class="prof-mini-num" id="perfTotal">0</div>
+              <div class="prof-mini-label">Total</div>
+            </div>
+            <div class="prof-mini-stat">
+              <div class="prof-mini-num gold" id="perfRank">#—</div>
+              <div class="prof-mini-label">Rank</div>
+            </div>
           </div>
           <div class="points-row">
             <div class="pts-icon">⭐</div>
-            <div class="pts-info"><div class="pts-num" id="totalPoints">0</div><div class="pts-lbl">Task Points Earned</div></div>
+            <div class="pts-info">
+              <div class="pts-num" id="totalPoints">0</div>
+              <div class="pts-lbl">Points Earned</div>
+            </div>
           </div>
           <div class="prof-rows">
             <div class="prof-row"><span class="prof-lbl">🏛 Department</span><span class="prof-val" id="pDept"></span></div>
@@ -486,17 +378,19 @@
             <div class="prof-row"><span class="prof-lbl">⚡ Role</span><span class="prof-val" id="pRole"></span></div>
           </div>
           <div class="prof-bar-wrap">
-            <div class="prof-bar-top"><span>Completion Rate</span><span id="perfPct">0%</span></div>
-            <div class="prof-bar-bg"><div class="prof-bar-fill" id="perfBar"></div></div>
+            <div class="prof-bar-top">
+              <span>Completion Rate</span>
+              <span id="perfPct">0%</span>
+            </div>
+            <div class="prof-bar-bg">
+              <div class="prof-bar-fill" id="perfBar"></div>
+            </div>
           </div>
           <button class="btn-danger" onclick="logout()">⏻ Logout</button>
         </div>
       </div>
 
-      <!-- RIGHT — Skill Card + Activity Points + Recent Activity -->
-      <div class="profile-right-col">
-
-        <!-- Skill Flip Card -->
+      <div style="display:flex;flex-direction:column;gap:60px;width:350px">
         <div class="flip-card" id="profileFlipCard" onclick="this.classList.toggle('flipped')">
           <div class="flip-inner">
             <div class="flip-front card" style="padding:0;overflow:hidden;height:100%">
@@ -508,15 +402,21 @@
               </div>
               <div style="display:flex;border-bottom:1px solid var(--border)">
                 <div class="fsc-stat"><div class="fsc-val green" id="f2Done">0</div><div class="fsc-lbl">DONE</div></div>
-                <div class="fsc-stat" style="border-left:1px solid var(--border);border-right:1px solid var(--border)"><div class="fsc-val amber" id="f2Pending">0</div><div class="fsc-lbl">PENDING</div></div>
-                <div class="fsc-stat" style="border-right:1px solid var(--border)"><div class="fsc-val" id="f2Total">0</div><div class="fsc-lbl">TOTAL</div></div>
-                <div class="fsc-stat"><div class="fsc-val gold" id="f2Rank">#—</div><div class="fsc-lbl">RANK</div></div>
+                <div class="fsc-stat" style="border-left:1px solid var(--border);border-right:1px solid var(--border)">
+                  <div class="fsc-val amber" id="f2Pending">0</div><div class="fsc-lbl">PENDING</div>
+                </div>
+                <div class="fsc-stat" style="border-right:1px solid var(--border)">
+                  <div class="fsc-val" id="f2Total">0</div><div class="fsc-lbl">TOTAL</div>
+                </div>
+                <div class="fsc-stat">
+                  <div class="fsc-val gold" id="f2Rank">#—</div><div class="fsc-lbl">RANK</div>
+                </div>
               </div>
               <div style="padding:14px 20px">
                 <div id="flipStreakChip"></div>
                 <div style="margin-top:14px;display:flex;align-items:center;gap:8px">
                   <div style="flex:1;height:1px;background:var(--border)"></div>
-                  <span style="font-size:10px;color:var(--text3)">SKILL CARD · tap to flip</span>
+                  <span style="font-size:10px;color:var(--text3)">SKILL CARD</span>
                 </div>
               </div>
             </div>
@@ -532,38 +432,48 @@
           </div>
         </div>
 
-        <!-- Activity Points -->
-        <div id="profileActivityPoints"></div>
-
-        <!-- Recent Activity -->
         <div class="card">
-          <div class="card-head"><span class="card-title">Recent Activity</span><span class="badge-pill" id="recentCount">0</span></div>
+          <div class="card-head">
+            <span class="card-title">Recent Activity</span>
+            <span class="badge-pill" id="recentCount">0</span>
+          </div>
           <ul class="task-list" id="recentActivity"></ul>
-          <div class="empty-state" id="recentEmpty" style="display:none"><span>📋</span><p>No activity yet</p></div>
+          <div class="empty-state" id="recentEmpty" style="display:none">
+            <span>📋</span><p>No activity yet</p>
+          </div>
         </div>
-
       </div>
     </div>
   </section>
 
 </div><!-- /main -->
 
-<!-- MODALS -->
+<!-- Task Submit Modal -->
 <div id="submitModal" class="modal-overlay" style="display:none" onclick="closeSubmitModal()">
   <div class="modal-box" onclick="event.stopPropagation()">
-    <div class="modal-head"><span style="font-size:14px;font-weight:600;color:var(--text)">📤 Submit Task</span><button onclick="closeSubmitModal()" style="background:none;border:none;color:var(--text3);font-size:20px;cursor:pointer">✕</button></div>
+    <div class="modal-head">
+      <span style="font-size:14px;font-weight:600;color:var(--text)">📤 Submit Task</span>
+      <button onclick="closeSubmitModal()" style="background:none;border:none;color:var(--text3);font-size:20px;cursor:pointer">✕</button>
+    </div>
     <p id="submitTaskName" style="font-size:13px;color:var(--text2);margin-bottom:14px"></p>
-    <input id="submitNote" placeholder="Add a note…" style="width:100%;padding:11px 13px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:13px;font-family:Inter,sans-serif;outline:none;margin-bottom:10px"/>
-    <input id="submitLink" placeholder="🔗 Paste your work link…" style="width:100%;padding:11px 13px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:13px;font-family:Inter,sans-serif;outline:none;margin-bottom:14px"/>
+    <input id="submitNote" placeholder="Add a note e.g. Completed login page with OAuth integration" style="width:100%;padding:11px 13px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:13px;font-family:Inter,sans-serif;outline:none;margin-bottom:10px"/>
+    <input id="submitLink" placeholder="🔗 Paste your work link (GitHub, Drive, Figma…)" style="width:100%;padding:11px 13px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:13px;font-family:Inter,sans-serif;outline:none;margin-bottom:14px"/>
     <button class="btn-primary" style="width:100%" onclick="submitTask()">📤 Submit for Review</button>
   </div>
 </div>
 
+<!-- Review Modal -->
 <div id="reviewModal" class="modal-overlay" style="display:none" onclick="closeReviewModal()">
   <div class="modal-box" onclick="event.stopPropagation()">
-    <div class="modal-head"><span style="font-size:14px;font-weight:600;color:var(--text)">🔍 Review Task</span><button onclick="closeReviewModal()" style="background:none;border:none;color:var(--text3);font-size:20px;cursor:pointer">✕</button></div>
+    <div class="modal-head">
+      <span style="font-size:14px;font-weight:600;color:var(--text)">🔍 Review Task</span>
+      <button onclick="closeReviewModal()" style="background:none;border:none;color:var(--text3);font-size:20px;cursor:pointer">✕</button>
+    </div>
     <div id="reviewTaskDetails" style="margin-bottom:16px"></div>
-    <div style="margin-bottom:14px"><label style="font-size:12px;color:var(--text2);display:block;margin-bottom:8px">⭐ Assign Points (1–10)</label><div class="points-picker" id="pointsPicker"></div></div>
+    <div style="margin-bottom:14px">
+      <label style="font-size:12px;color:var(--text2);display:block;margin-bottom:8px">⭐ Assign Points (1–10)</label>
+      <div class="points-picker" id="pointsPicker"></div>
+    </div>
     <input id="reviewFeedback" placeholder="Feedback for member…" style="width:100%;padding:11px 13px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:13px;font-family:Inter,sans-serif;outline:none;margin-bottom:14px"/>
     <div style="display:flex;gap:10px">
       <button class="btn-primary" style="flex:1" onclick="approveTask()">✅ Approve & Assign Points</button>
@@ -572,84 +482,59 @@
   </div>
 </div>
 
+<!-- Comment Modal -->
 <div id="commentModal" class="modal-overlay" style="display:none" onclick="closeCommentModal()">
   <div class="modal-box" onclick="event.stopPropagation()">
-    <div class="modal-head"><span id="commentTaskTitle" style="font-size:14px;font-weight:600;color:var(--text)"></span><button onclick="closeCommentModal()" style="background:none;border:none;color:var(--text3);font-size:20px;cursor:pointer">✕</button></div>
+    <div class="modal-head">
+      <span id="commentTaskTitle" style="font-size:14px;font-weight:600;color:var(--text)"></span>
+      <button onclick="closeCommentModal()" style="background:none;border:none;color:var(--text3);font-size:20px;cursor:pointer">✕</button>
+    </div>
     <div id="commentsList" style="max-height:260px;overflow-y:auto;margin-bottom:12px"></div>
-    <div style="display:flex;gap:8px"><input id="commentInput" placeholder="Add a comment…"/><button class="btn-primary" style="padding:10px 16px" onclick="addComment()">Send</button></div>
+    <div style="display:flex;gap:8px">
+      <input id="commentInput" placeholder="Add a comment or progress update…"/>
+      <button class="btn-primary" style="padding:10px 16px" onclick="addComment()">Send</button>
+    </div>
   </div>
 </div>
 
+<!-- Reassign Modal -->
 <div id="reassignModal" class="modal-overlay" style="display:none" onclick="closeReassignModal()">
   <div class="modal-box" onclick="event.stopPropagation()">
-    <div class="modal-head"><span style="font-size:14px;font-weight:600;color:var(--text)">↔ Reassign Task</span><button onclick="closeReassignModal()" style="background:none;border:none;color:var(--text3);font-size:20px;cursor:pointer">✕</button></div>
+    <div class="modal-head">
+      <span style="font-size:14px;font-weight:600;color:var(--text)">↔ Reassign Task</span>
+      <button onclick="closeReassignModal()" style="background:none;border:none;color:var(--text3);font-size:20px;cursor:pointer">✕</button>
+    </div>
     <p id="reassignTaskName" style="font-size:13px;color:var(--text2);margin-bottom:14px"></p>
     <select id="reassignSelect" style="width:100%;padding:11px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:13px;margin-bottom:14px;outline:none;font-family:Inter,sans-serif"></select>
     <button class="btn-primary" style="width:100%" onclick="confirmReassign()">Reassign Task</button>
   </div>
 </div>
 
-<!-- FIREBASE -->
+<!-- ═══ FIREBASE ═══ -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getDatabase, ref, onValue, push, update, remove, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
   const firebaseConfig = {
-    apiKey:"AIzaSyCaInB1din3Z6iiGJZIG6J7b9U2ASnfgsY",
-    authDomain:"titans-portal-8b124.firebaseapp.com",
-    databaseURL:"https://titans-portal-8b124-default-rtdb.firebaseio.com",
-    projectId:"titans-portal-8b124",
-    storageBucket:"titans-portal-8b124.firebasestorage.app",
-    messagingSenderId:"248684743938",
-    appId:"1:248684743938:web:7500d46e42bf3a5205061b"
+    apiKey:            "AIzaSyCaInB1din3Z6iiGJZIG6J7b9U2ASnfgsY",
+    authDomain:        "titans-portal-8b124.firebaseapp.com",
+    databaseURL:       "https://titans-portal-8b124-default-rtdb.firebaseio.com",
+    projectId:         "titans-portal-8b124",
+    storageBucket:     "titans-portal-8b124.firebasestorage.app",
+    messagingSenderId: "248684743938",
+    appId:             "1:248684743938:web:7500d46e42bf3a5205061b"
   };
+
   const hasFirebase = !firebaseConfig.apiKey.includes("PASTE");
   let app, db, tasksRef, metaRef;
   if (hasFirebase) {
-    app = initializeApp(firebaseConfig);
-    db = getDatabase(app);
+    app      = initializeApp(firebaseConfig);
+    db       = getDatabase(app);
     tasksRef = ref(db, "titans/tasks");
-    metaRef = ref(db, "titans/meta");
+    metaRef  = ref(db, "titans/meta");
   }
+
   window._FB = { hasFirebase, db, tasksRef, metaRef, ref, onValue, push, update, remove, set };
-</script>
-
-<!-- THEME + TAB SCRIPTS -->
-<script>
-  // Load saved theme on start
-  const _savedTheme = localStorage.getItem("titans_theme") || "dark";
-  document.documentElement.setAttribute("data-theme", _savedTheme);
-
-  function toggleTheme() {
-    const cur = document.documentElement.getAttribute("data-theme");
-    const next = cur === "dark" ? "light" : "dark";
-    document.documentElement.setAttribute("data-theme", next);
-    localStorage.setItem("titans_theme", next);
-    _updateThemeBtn(next);
-  }
-
-  function _updateThemeBtn(theme) {
-    const icon = document.getElementById("themeIcon");
-    const label = document.getElementById("themeLabel");
-    if (theme === "dark") { if(icon) icon.textContent="☀️"; if(label) label.textContent="Light"; }
-    else { if(icon) icon.textContent="🌙"; if(label) label.textContent="Dark"; }
-  }
-
-  document.addEventListener("DOMContentLoaded", () => {
-    _updateThemeBtn(document.documentElement.getAttribute("data-theme"));
-  });
-
-  function switchLbTab(tab, el) {
-    document.querySelectorAll(".lb-tab").forEach(t => t.classList.remove("active"));
-    document.querySelectorAll(".lb-tab-content").forEach(c => c.classList.remove("active"));
-    el.classList.add("active");
-    document.getElementById("lb-tab-" + tab)?.classList.add("active");
-    // Load activity leaderboard when tab is switched
-    if (tab === "activity" && window.TitansActivity) {
-      const teamUsers = JSON.parse(localStorage.getItem("teamUsers")) || [];
-      const user = JSON.parse(localStorage.getItem("user")) || {};
-      TitansActivity.renderLeaderboard("activityLeaderboard", teamUsers, user.name);
-    }
-  }
 </script>
 
 <script src="dashboard.js"></script>
@@ -657,7 +542,6 @@
 <script src="voice-notes.js"></script>
 <script src="team-poll.js"></script>
 <script src="push-notifications.js"></script>
-<script src="activity-points.js"></script>
 <script src="titan-chat.js"></script>
 
 </body>
