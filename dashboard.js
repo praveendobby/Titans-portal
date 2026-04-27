@@ -1437,3 +1437,6 @@ function renderProfile() {
   setupTopbar();
   startFirebase();
 });
+if (section === 'teams') {
+  window.onShowTeams();
+}
