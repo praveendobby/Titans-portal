@@ -1434,9 +1434,38 @@ function renderProfile() {
   }
 
   /* ── START ── */
-  setupTopbar();
-  startFirebase();
-});
-if (section === 'teams') {
-  window.onShowTeams();
-}
+  function showSection(section, el) {
+  // Hide all sections
+  document.querySelectorAll(".section").forEach(sec => {
+    sec.classList.remove("active");
+    sec.style.display = "none";
+  });
+
+  // Show selected section
+  const target = document.getElementById("sec-" + section);
+  if (target) {
+    target.classList.add("active");
+    target.style.display = "block";
+  } else {
+    console.error("Section not found:", section);
+  }
+
+  // Active sidebar highlight
+  document.querySelectorAll(".sidebar li").forEach(li => li.classList.remove("active"));
+  if (el) el.classList.add("active");
+
+  // Update title
+  const titleMap = {
+    home: "Dashboard",
+    tasks: "Tasks",
+    members: "Members",
+    leaderboard: "Leaderboard",
+    noticeboard: "Notice Board",
+    meetings: "Meetings",
+    teams: "Team Formation",
+    polls: "Polls",
+    analytics: "Analytics",
+    profile: "Profile"
+  };
+
+  document.getElementById("sectionTitle").innerText = titleMap[section] || "Dashboard";}
