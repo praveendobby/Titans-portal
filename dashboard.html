@@ -36,6 +36,10 @@
     <li onclick="showSection('meetings',this)" title="Meetings">
       <span class="nav-icon">📅</span><span class="nav-label">Meetings</span>
     </li>
+    <li onclick="showSection('teams')">
+  <span class="nav-icon">⚡</span>
+  <span class="nav-label">Team Formation</span>
+</li>
     <li onclick="showSection('polls',this)" title="Team Polls">
       <span class="nav-icon">🗳️</span><span class="nav-label">Polls</span>
     </li>
@@ -303,6 +307,22 @@
       <div id="meetingsList"></div>
     </div>
   </section>
+  <div id="teams-section" class="section" style="display:none;">
+  
+  <!-- Stats -->
+  <div class="tf-stats">
+    <div id="tf-stat-teams"></div>
+    <div id="tf-stat-slots"></div>
+    <div id="tf-stat-members"></div>
+  </div>
+
+  <!-- Form -->
+  <div id="tf-form-wrap"></div>
+
+  <!-- Teams Grid -->
+  <div id="tf-teams-grid"></div>
+
+</div>
 
   <!-- ═══ POLLS ═══ -->
   <section id="sec-polls" class="section">

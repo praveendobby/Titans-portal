@@ -1144,7 +1144,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     if(!saved){ saveLocal("titans_tasks",tasks); }
     renderTasks();
   };
+    function showSection(section) {
+  document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
 
+  const target = document.getElementById(section + '-section');
+  if (target) target.style.display = 'block';
+
+  // 🔥 ADD THIS
+  if (section === 'teams') {
+    window.onShowTeams();
+  }
+}
   /* ══════════════════════════════════════════════════════
      ANALYTICS
   ══════════════════════════════════════════════════════ */
