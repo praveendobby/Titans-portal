@@ -450,10 +450,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     if(active==="sec-meetings")    renderMeetings();
     if(active==="sec-noticeboard") renderNewsFeed();
     if(active==="sec-polls")       { if(window.TitansPoll) TitansPoll.renderPollSection("pollContainer"); }
+    if(active==="sec-teams")       { if(window.onShowTeams) window.onShowTeams(); }
   }
 
   /* ══════════════════════════════════════════════════════
-     SECTION SWITCHING — FIXED
+     SECTION SWITCHING — SINGLE CORRECT DEFINITION
   ══════════════════════════════════════════════════════ */
   window.showSection = (name, el) => {
     document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
@@ -462,15 +463,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (el) el.classList.add("active");
 
     const titles = {
-      home: "Dashboard",
-      tasks: "Tasks",
-      members: "Team Members",
+      home:        "Dashboard",
+      tasks:       "Tasks",
+      members:     "Team Members",
       leaderboard: "Leaderboard",
       noticeboard: "Notice Board",
-      meetings: "Meetings",
-      analytics: "Analytics",
-      profile: "Profile",
-      polls: "Team Polls"
+      meetings:    "Meetings",
+      analytics:   "Analytics",
+      profile:     "Profile",
+      polls:       "Team Polls",
+      teams:       "Team Formation"
     };
     const titleEl = document.getElementById("sectionTitle");
     if (titleEl) titleEl.textContent = titles[name] || name;
@@ -484,7 +486,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       profile:     renderProfile,
       meetings:    renderMeetings,
       noticeboard: renderNewsFeed,
-      polls:       () => { if (window.TitansPoll) TitansPoll.renderPollSection("pollContainer"); }
+      polls:       () => { if (window.TitansPoll) TitansPoll.renderPollSection("pollContainer"); },
+      teams:       () => { if (window.onShowTeams) window.onShowTeams(); }
     };
 
     if (fns[name]) fns[name]();
@@ -1144,17 +1147,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if(!saved){ saveLocal("titans_tasks",tasks); }
     renderTasks();
   };
-    function showSection(section) {
-  document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
 
-  const target = document.getElementById(section + '-section');
-  if (target) target.style.display = 'block';
-
-  // 🔥 ADD THIS
-  if (section === 'teams') {
-    window.onShowTeams();
-  }
-}
   /* ══════════════════════════════════════════════════════
      ANALYTICS
   ══════════════════════════════════════════════════════ */
@@ -1193,120 +1186,112 @@ document.addEventListener("DOMContentLoaded", async () => {
     showToast("📊 Report generated!");
   };
 
-  
-function renderProfile() {
+  /* ══════════════════════════════════════════════════════
+     PROFILE
+  ══════════════════════════════════════════════════════ */
+  function renderProfile() {
+    const ph = document.getElementById("profPhoto");
+    const idx = Math.max(0, mIdx(user.name));
 
-  const ph = document.getElementById("profPhoto");
-  const idx = Math.max(0, mIdx(user.name));
+    if (ph) {
+      const imgSrc = fixImgUrl(user.imgSrc);
+      if (imgSrc) {
+        ph.innerHTML = `<img src="${imgSrc}" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;" onerror="this.remove();">`;
+        ph.className = "prof-photo " + avCls(idx);
+      } else {
+        ph.className = "prof-photo " + avCls(idx);
+        ph.textContent = ini(user.name);
+      }
+    }
 
-  if (ph) {
-    const imgSrc = fixImgUrl(user.imgSrc);
-    if (imgSrc) {
-      ph.innerHTML = `<img src="${imgSrc}" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;" onerror="this.remove();">`;
-      ph.className = "prof-photo " + avCls(idx);
+    const set = (id, val) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = val || "";
+    };
+
+    set("profileName", user.name);
+    set("profileDesig", user.designation);
+    set("pDept", user.department);
+    set("pTeam", user.team);
+    set("pGroup", user.groupId);
+    set("pReg", user.regNo);
+    set("pRole", user.designation);
+    set("pEmail", user.email);
+
+    const s = memberStats(user.name);
+    const pct = s.total ? Math.round((s.done / s.total) * 100) : 0;
+    const pts = getMemberPoints(user.name);
+
+    set("perfDone", String(s.done));
+    set("perfPending", String(s.pending));
+    set("perfTotal", String(s.total));
+    set("perfPct", pct + "%");
+    set("totalPoints", String(pts));
+
+    const pBar = document.getElementById("perfBar");
+    if (pBar) pBar.style.width = pct + "%";
+
+    const sorted = [...teamUsers].sort((a, b) => memberScore(b.name) - memberScore(a.name));
+    set("perfRank", "#" + (sorted.findIndex(u2 => u2.name === user.name) + 1));
+
+    const badges = getBadges(user.name);
+    const bdgEl = document.getElementById("profileBadges");
+    if (bdgEl) {
+      bdgEl.innerHTML = badges.length
+        ? badges.map(b => `<div class="badge-item">${b.icon} ${b.name}</div>`).join("")
+        : `<div style="font-size:12px;color:var(--text3)">No badges yet — complete tasks to earn!</div>`;
+    }
+
+    const streak = getStreak(user.name);
+    const strEl = document.getElementById("streakRow");
+    if (strEl) {
+      strEl.innerHTML = streak > 0
+        ? `<div class="streak-fire">🔥</div>
+           <div class="streak-info">
+             <div class="streak-num">${streak} day streak</div>
+             <div style="font-size:11px;color:var(--text3)">Keep it up!</div>
+           </div>`
+        : "";
+    }
+
+    const mine = tasks.filter(t => t.member === user.name).slice(-10).reverse();
+    const aL = document.getElementById("recentActivity");
+    const aE = document.getElementById("recentEmpty");
+    const rC = document.getElementById("recentCount");
+
+    if (rC) rC.textContent = mine.length;
+
+    if (!mine.length) {
+      if (aL) aL.innerHTML = "";
+      if (aE) aE.style.display = "";
     } else {
-      ph.className = "prof-photo " + avCls(idx);
-      ph.textContent = ini(user.name);
+      if (aE) aE.style.display = "none";
+      if (aL) {
+        aL.innerHTML = mine.map(t => `
+          <li>
+            <div class="task-check ${t.status === "reviewed" || t.done ? "done" : ""}"
+                 style="cursor:default;opacity:0.6">
+                 ${t.status === "reviewed" || t.done ? "✓" : ""}
+            </div>
+            <div class="task-body">
+              <div class="task-name ${t.status === "reviewed" || t.done ? "done" : ""}">
+                ${t.text}
+              </div>
+              <div class="task-meta">
+                ${statusChip(t)}
+                ${t.points ? `<span class="pts-badge">⭐ ${t.points} pts</span>` : ""}
+              </div>
+            </div>
+          </li>
+        `).join("");
+      }
+    }
+
+    if (window.TitansActivity && user.name) {
+      TitansActivity.renderProfile(user.name, "profile-activity");
     }
   }
 
-  const set = (id, val) => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = val || "";
-  };
-
-  set("profileName", user.name);
-  set("profileDesig", user.designation);
-  set("pDept", user.department);
-  set("pTeam", user.team);
-  set("pGroup", user.groupId);
-  set("pReg", user.regNo);
-  set("pRole", user.designation);
-  set("pEmail", user.email);
-
-  const s = memberStats(user.name);
-  const pct = s.total ? Math.round((s.done / s.total) * 100) : 0;
-
-  const pts = getMemberPoints(user.name);
-
-  set("perfDone", String(s.done));
-  set("perfPending", String(s.pending));
-  set("perfTotal", String(s.total));
-  set("perfPct", pct + "%");
-  set("totalPoints", String(pts));
-
-  const pBar = document.getElementById("perfBar");
-  if (pBar) pBar.style.width = pct + "%";
-
-  const sorted = [...teamUsers].sort((a, b) => memberScore(b.name) - memberScore(a.name));
-  set("perfRank", "#" + (sorted.findIndex(u2 => u2.name === user.name) + 1));
-
-  // Badges
-  const badges = getBadges(user.name);
-  const bdgEl = document.getElementById("profileBadges");
-
-  if (bdgEl) {
-    bdgEl.innerHTML = badges.length
-      ? badges.map(b => `<div class="badge-item">${b.icon} ${b.name}</div>`).join("")
-      : `<div style="font-size:12px;color:var(--text3)">No badges yet — complete tasks to earn!</div>`;
-  }
-
-  // Streak
-  const streak = getStreak(user.name);
-  const strEl = document.getElementById("streakRow");
-
-  if (strEl) {
-    strEl.innerHTML = streak > 0
-      ? `<div class="streak-fire">🔥</div>
-         <div class="streak-info">
-           <div class="streak-num">${streak} day streak</div>
-           <div style="font-size:11px;color:var(--text3)">Keep it up!</div>
-         </div>`
-      : "";
-  }
-
-  // Recent Activity
-  const mine = tasks.filter(t => t.member === user.name).slice(-10).reverse();
-  const aL = document.getElementById("recentActivity");
-  const aE = document.getElementById("recentEmpty");
-  const rC = document.getElementById("recentCount");
-
-  if (rC) rC.textContent = mine.length;
-
-  if (!mine.length) {
-    if (aL) aL.innerHTML = "";
-    if (aE) aE.style.display = "";
-  } else {
-    if (aE) aE.style.display = "none";
-    if (aL) {
-      aL.innerHTML = mine.map(t => `
-        <li>
-          <div class="task-check ${t.status === "reviewed" || t.done ? "done" : ""}" 
-               style="cursor:default;opacity:0.6">
-               ${t.status === "reviewed" || t.done ? "✓" : ""}
-          </div>
-
-          <div class="task-body">
-            <div class="task-name ${t.status === "reviewed" || t.done ? "done" : ""}">
-              ${t.text}
-            </div>
-
-            <div class="task-meta">
-              ${statusChip(t)}
-              ${t.points ? `<span class="pts-badge">⭐ ${t.points} pts</span>` : ""}
-            </div>
-          </div>
-        </li>
-      `).join("");
-    }
-  }
-
-  // 🔥 ACTIVITY POINTS CARD (FINAL FIX)
-  if (window.TitansActivity && user.name) {
-    TitansActivity.renderProfile(user.name, "profile-activity");
-  }
-
-}
   /* ══════════════════════════════════════════════════════
      BADGES + STREAK
   ══════════════════════════════════════════════════════ */
@@ -1434,38 +1419,6 @@ function renderProfile() {
   }
 
   /* ── START ── */
-  function showSection(section, el) {
-  // Hide all sections
-  document.querySelectorAll(".section").forEach(sec => {
-    sec.classList.remove("active");
-    sec.style.display = "none";
-  });
+  startFirebase();
 
-  // Show selected section
-  const target = document.getElementById("sec-" + section);
-  if (target) {
-    target.classList.add("active");
-    target.style.display = "block";
-  } else {
-    console.error("Section not found:", section);
-  }
-
-  // Active sidebar highlight
-  document.querySelectorAll(".sidebar li").forEach(li => li.classList.remove("active"));
-  if (el) el.classList.add("active");
-
-  // Update title
-  const titleMap = {
-    home: "Dashboard",
-    tasks: "Tasks",
-    members: "Members",
-    leaderboard: "Leaderboard",
-    noticeboard: "Notice Board",
-    meetings: "Meetings",
-    teams: "Team Formation",
-    polls: "Polls",
-    analytics: "Analytics",
-    profile: "Profile"
-  };
-
-  document.getElementById("sectionTitle").innerText = titleMap[section] || "Dashboard";}
+});
